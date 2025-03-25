@@ -1,0 +1,7 @@
+#imgcontainer{
+  border-radius: 2em;
+  border:1px solid black;
+  aspect-ratio: 1;
+  width:30%;
+  margin: 1%;
+}
