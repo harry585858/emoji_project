@@ -1,7 +1,17 @@
 #imgcontainer{
   border-radius: 2em;
+
+  aspect-ratio: 3/4;
+  width:200px;
+  margin: 1%;
+}
+#imgcontainer > *{
+  color:black;
+}
+img {
+  width:100%;
   border:1px solid black;
   aspect-ratio: 1;
-  width:30%;
-  margin: 1%;
+  border-radius: 2em;
+  border:0px;
 }
