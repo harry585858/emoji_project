@@ -6,6 +6,7 @@
   margin: 1%;
 }
 #imgcontainer > *{
+  text-align: left;
   color:black;
 }
 img {

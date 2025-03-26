@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import './Emoji.css'
 import myimg from './assets/test.png'
-
+//이미지와 제목 제작자
 function Emoji() {
   const [count, setCount] = useState(0)
-
   return (
     <>
     <li>
