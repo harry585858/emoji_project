@@ -13,7 +13,7 @@ function App() {
         <h1>여러 이모티콘들</h1 >
         <ul>
         <Emoji />
-        </ul>
+        </ul>ub
       </div>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>

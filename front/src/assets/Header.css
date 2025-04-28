@@ -2,3 +2,14 @@
   height:10vh;
   width:100vw;
 }
+#header input{
+  height:2em;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 1em;
+  width:50vw;
+}
+#headerbtn{
+  display: flex;
+  justify-content: flex-end;
+}
