@@ -1,9 +1,11 @@
 import {Route, Routes} from "react-router-dom";
-import Main from  '../Main';
+import Login from "./Login";
+import App from "./App";
 function RouterConfig(){
     return(
         <Routes>
-            <Route path="/main" element={<Main/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/" element={<App/>}/>
         </Routes>
     )
 }

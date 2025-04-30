@@ -15,7 +15,6 @@ function Header() {
 ) : (
   <button id='headerbtn' onClick={() => { window.location.href = '/login'; }}>로그인</button>
 )}
-      <hr></hr>
     </div>
     </>
   )
