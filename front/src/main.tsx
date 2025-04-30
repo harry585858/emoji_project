@@ -1,14 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './assets/index.css'
-import App from './pages/App.tsx'
-import Header from'./components/Header.tsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './assets/index.css';
+import Header from './components/Header.tsx';
+import { BrowserRouter } from 'react-router-dom';
+import RouterConfig from './pages/router.tsx';  // 라우팅 처리하는 컴포넌트
+import App from './pages/App.tsx';  // 첫 화면에 보여줄 컴포넌트
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Header />
-    <App />
-  </StrictMode>,
-)
-
-export default Main;
+    <BrowserRouter>
+      <Header />  {/* Header는 상단에 항상 보여짐 */}
+      <RouterConfig />  {/* 라우팅을 처리 */}
+    </BrowserRouter>
+  </StrictMode>
+);

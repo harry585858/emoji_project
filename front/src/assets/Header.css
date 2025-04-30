@@ -1,6 +1,12 @@
 #header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   height:10vh;
   width:100vw;
+  display:flex;
+  justify-content:end;
 }
 #header input{
   height:2em;
@@ -12,4 +18,5 @@
 #headerbtn{
   display: flex;
   justify-content: flex-end;
+  height:2em;
 }
