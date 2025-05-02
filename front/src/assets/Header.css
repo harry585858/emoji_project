@@ -1,22 +1,33 @@
-#header{
+#header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height:10vh;
-  width:100vw;
-  display:flex;
-  justify-content:end;
+  height: 10vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2vw;
+  box-sizing: border-box; /* padding을 포함하여 전체 너비가 100vw를 초과하지 않도록 설정 */
 }
-#header input{
-  height:2em;
+
+#header img {
+  height: 80%; /* 이미지 크기를 부모 높이에 맞게 설정 */
+  width: auto; /* width 자동으로 설정하여 비율을 맞추도록 */
+}
+
+#header input {
+  height: 2em;
   background-color: white;
   border: 1px solid black;
   border-radius: 1em;
-  width:50vw;
+  width: 50vw; /* 가운데 정렬을 위한 너비 설정 */
 }
-#headerbtn{
-  display: flex;
-  justify-content: flex-end;
-  height:2em;
+
+#headerbtn {
+  height: 3em;
+  border: 1px solid black;
+  border-radius: 1em;
+  padding: 0 1em; /* 버튼 안의 여백 추가 */
 }

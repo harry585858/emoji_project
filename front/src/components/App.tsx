@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import '../assets/App.css'
 import Emoji from './Emoji'
+// 첫 화면 내부 이미지 모음
 function App() {
   const [count, setCount] = useState(0)
 
