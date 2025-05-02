@@ -31,3 +31,12 @@
   border-radius: 1em;
   padding: 0 1em; /* 버튼 안의 여백 추가 */
 }
+html, body {
+  height: 100%; /* 화면 전체 높이 */
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
