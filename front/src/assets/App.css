@@ -1,36 +1,42 @@
-body{
-  background-color: white;
-  margin: 0px;
-  padding: 0px;
+/* App.css */
+
+/* 격자 레이아웃 스타일 */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));  /* 자동으로 칸을 채우는 격자 */
+  gap: 1rem; /* 항목 간 간격 */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.emoji-item {
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.emoji-image {
+  width: 100%;
+  height: auto;
+  display: block; /* 이미지가 세로와 가로 비율을 맞추며 보이도록 */
+  border-radius: 8px;
 }
 #main{
-  height: 100%;
-  width: 90%;
-  background-color: white;
+  display: flex;
+  flex-direction: column;  /* 세로로 정렬 */
+  align-items: center;     /* 가로 가운데 정렬 */
+  justify-content: center; /* 세로 가운데 정렬 */
+  height: 80vh;            /* 화면 높이의 80% 크기 */
+  width: 100%;             /* 전체 너비 */
+  margin: 0 auto;          /* 중앙 정렬 */
+  text-align: center;    
 }
-#main > h1{
-  color: black;
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+html, body {
+  height: 100%; /* 화면 전체 높이 */
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* 텍스트 중앙 정렬 */
 }
