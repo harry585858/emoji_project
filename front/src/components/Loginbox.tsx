@@ -14,11 +14,12 @@ function Loginbox() {
     <div id='main1'>
       <div id='left'></div>
       <div id='right'>
-        <form onSubmit={handleLogin}>
+        <form action='account/login' method='post'>
           <input type="text" placeholder="Username" />
           <input type="password" placeholder="Password" />
           <button type="submit">Login</button>
         </form>
+        <button id='signinbtn' onClick={() => {window.location.href = '/account/create'; }}>signin</button>
       </div>
     </div>
   );
