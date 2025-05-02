@@ -7,6 +7,7 @@ function Header() {
   return (
     <>
     <div id='header'>
+      <img alt='logo'></img>
       <form action="/search">
       <input type="text" placeholder='검색어 입력'/>
       </form>
