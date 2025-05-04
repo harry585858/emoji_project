@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import '../assets/Header.css';
 
 function Header() {
   const [login, setLogin] = useState(false);
   const [search, setSearch] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<string[]>([]);
+  useEffect(() => {//dummy
+    const dummyImages: string[] = Array.from({ length: 5 }, (_, i) =>
+      `https://via.placeholder.com/150?text=Image${i + 1}`
+    );
+    setImages(dummyImages);
+  }, []);
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (search.trim() === '') {
@@ -30,7 +36,13 @@ function Header() {
       console.error('검색 요청 실패:', err);
     }
   };
-
+  function extractImageID(url:string) {
+    const parts = url.split('/');
+    const filename = parts[parts.length - 1]; // "12345.jpg"
+    const id = filename.split('.')[0]; // "12345"
+    return id;
+  }
+  
   return (
     <>
       <div id="header">
@@ -58,10 +70,18 @@ function Header() {
 
       {/* 검색 결과 이미지 출력 */}
       <div className="image-results">
-        {images.map((url, idx) => (
-          <img key={idx} src={url} alt={`result-${idx}`} />
-        ))}
+  {images.map((url, idx) => {
+    const imageID = extractImageID(url); // URL에서 ID 추출 함수 필요
+    return (
+      <div className='imgbox'>
+      <a key={idx} href={`/detail?imageID=${imageID}`}>
+        <img src={url} alt={`result-${idx}`} />
+      </a>
       </div>
+    );
+  })}
+</div>
+
     </>
   );
 }
