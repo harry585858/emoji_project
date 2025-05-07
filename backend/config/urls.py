@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from accounts.views import signup
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/signup/', signup, name='signup'),  # 회원가입 엔드포인트
+    path('api/login/', TokenObtainPairView.as_view(), name='login'),  # 로그인(JWT 토큰발급)
+    path('api/token/refresh/', TokenRefreshView.as_view()),  # 토큰 갱신
 ]
