@@ -13,7 +13,7 @@ function Loginbox() {
     setError(null);
 
     try {
-      const response = await fetch(`${config.apiurl}/account/login`, {
+      const response = await fetch(`${config.apiurl}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
