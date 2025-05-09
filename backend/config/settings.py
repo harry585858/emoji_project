@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'accounts',  # 회원가입,로그인,로그아웃
+    'image',
 ]
 
 MIDDLEWARE = [
@@ -96,9 +97,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Keepic',
+        'NAME': 'test',
         'USER': 'root',
-        'PASSWORD': '020204',
+        'PASSWORD': '0000',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -136,6 +137,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+#웹에서 접근할째 사용하는 경로
+MEDIA_URL = '/media/'
+#실제 서버에 저장되는 경로
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
