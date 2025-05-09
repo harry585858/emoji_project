@@ -1,4 +1,4 @@
 const config = {
-    apiurl : 'http://localhost:8000/api'
+    apiurl : 'http://localhost:8000/'
 }
 export default config

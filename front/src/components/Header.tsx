@@ -2,6 +2,15 @@ import { useState, useEffect, FormEvent } from 'react';
 import { useLocation } from 'react-router-dom'; // useLocation 훅 임포트
 import '../assets/Header.css';
 
+// 쿠키에서 특정 key (예: userID) 값을 찾는 함수
+const getCookie = (name: string): string | null => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+  return null;
+};
+
+// Header 컴포넌트 내에서 로그인 여부 확인
 function Header() {
   const [login, setLogin] = useState(false);
   const [search, setSearch] = useState('');
@@ -9,6 +18,12 @@ function Header() {
   const location = useLocation(); // 현재 경로 정보 가져오기
 
   useEffect(() => {
+    // userID 쿠키 확인하여 로그인 상태 설정
+    const userID = getCookie('userID');
+    if (userID) {
+      setLogin(true); // 쿠키에 userID가 있으면 로그인 상태로 설정
+    }
+
     // 더미 이미지 데이터 설정
     const dummyImages: string[] = Array.from({ length: 5 }, (_, i) =>
       `https://via.placeholder.com/150?text=Image${i + 1}`
