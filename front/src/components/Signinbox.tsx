@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import '../assets/Header.css';
-
+import axios from 'axios';
+import config from '../config';
 function Signinbox() {
-  // 상태 관리: 비밀번호, 비밀번호 확인
+  // 상태 관리: 아이디, 비밀번호, 비밀번호 확인, 오류 메시지
+  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // 로딩 상태
 
   // 비밀번호 확인 함수
-  const checkPasswords = (event) => {
+  const checkPasswords = (event: FormEvent) => {
     event.preventDefault(); // 폼 제출 기본 동작을 막음
     
     // 비밀번호 일치 여부 확인
@@ -17,10 +20,40 @@ function Signinbox() {
       return;
     }
 
-    // 비밀번호가 일치하면 폼 제출 (여기서는 콘솔에 출력)
+    // 유효성 검사 (아이디, 비밀번호, 비밀번호 확인 체크)
+    if (id === '' || password === '') {
+      setError('All fields are required.');
+      return;
+    }
+
+    // 비밀번호가 일치하면 회원가입 처리
     setError('');
-    console.log('폼 제출됨');
-    // 실제 폼 제출 처리 로직을 여기에 추가
+    submitSignup();
+  };
+
+  // 회원가입 API 호출 함수
+  const submitSignup = async () => {
+    try {
+      setLoading(true);  // 로딩 상태 시작
+
+      const response = await axios.post(`${config.apiurl}account/signup`, {
+        UserID: id,
+        userPW: password,
+      });
+
+      // 회원가입 성공 처리
+      if (response.status === 200) {
+        console.log('회원가입 성공:', response.data);
+        // 예시: 회원가입 후 로그인 페이지로 리디렉션
+        window.location.href = '/login';  // 로그인 페이지로 이동
+      } else {
+        setError('회원가입 실패! 다시 시도해 주세요.');
+      }
+    } catch (error) {
+      setError('회원가입 실패! 서버와 연결할 수 없습니다.');
+    } finally {
+      setLoading(false);  // 로딩 상태 종료
+    }
   };
 
   return (
@@ -31,22 +64,27 @@ function Signinbox() {
           <input
             type="text"
             placeholder="ID"
-            // ID 상태 관리 (사용자 ID 입력)
+            value={id}
+            onChange={(e) => setId(e.target.value)} // ID 상태 업데이트
           />
           <input
             type="password"
             placeholder="PW"
-            value={password} // 비밀번호 상태
-            onChange={(e) => setPassword(e.target.value)} // 비밀번호 변경 시 상태 업데이트
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
           />
           <input
             type="password"
             placeholder="PWRE"
-            value={confirmPassword} // 비밀번호 확인 상태
-            onChange={(e) => setConfirmPassword(e.target.value)} // 비밀번호 확인 변경 시 상태 업데이트
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)} // 비밀번호 확인 상태 업데이트
           />
           {error && <span style={{ color: 'red' }}>{error}</span>} {/* 오류 메시지 */}
-          <input type="submit" value="Submit" />
+          <input
+            type="submit"
+            value={loading ? 'Loading...' : 'Sign Up'} // 로딩 중에는 버튼 텍스트 변경
+            disabled={loading}  // 로딩 중에는 제출 버튼 비활성화
+          />
         </form>
       </div>
     </div>
