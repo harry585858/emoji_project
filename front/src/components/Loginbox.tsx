@@ -19,7 +19,7 @@ function Loginbox() {
           <input type="password" placeholder="Password" />
           <button type="submit">Login</button>
         </form>
-        <button id='signinbtn' onClick={() => {window.location.href = '/account/create'; }}>signin</button>
+        <button id='signinbtn' onClick={() => {window.location.href = '/account/signup'; }}>signup</button>
       </div>
     </div>
   );
