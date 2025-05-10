@@ -6,7 +6,7 @@ function RouterConfig(){
     return(
         <Routes>
             <Route path="/account/login" element={<Login/>}/>
-            <Route path="/account/create" element={<Signin/>}/>
+            <Route path="/account/signup" element={<Signin/>}/>
             <Route path="/" element={<App/>}/>
         </Routes>
     )
