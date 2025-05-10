@@ -42,7 +42,7 @@ function Signinbox() {
       });
 
       // 회원가입 성공 처리
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log('회원가입 성공:', response.data);
         // 예시: 회원가입 후 로그인 페이지로 리디렉션
         window.location.href = '/login';  // 로그인 페이지로 이동
