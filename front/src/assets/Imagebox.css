@@ -1,0 +1,40 @@
+.image-box {
+  width: 70%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.image-info {
+  width: 100%;
+  background-color: #efefef;
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+.image {
+  width: 80%;
+  max-height: 400px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.image-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.text-input {
+  padding: 10px;
+  font-size: 14px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
