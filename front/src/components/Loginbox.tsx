@@ -58,15 +58,7 @@ function Loginbox() {
           />
           <button type="submit">Login</button>
         </form>
-        {error && <p className="error">{error}</p>}
-        <button
-          id="signinbtn"
-          onClick={() => {
-            window.location.href = '/account/create';
-          }}
-        >
-          Sign Up
-        </button>
+        <button id='signinbtn' onClick={() => {window.location.href = '/account/signup'; }}>signup</button>
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ REST_FRAMEWORK = {
     ],
 }
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",   # 프론트 개발 주소필요
+    "http://localhost:5173",   # 프론트 개발 주소필요
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -98,14 +98,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'test',
-        'USER': 'root',
-        'PASSWORD': '0000',
-        'HOST': 'localhost',
+        'USER': 'admin',
+        'PASSWORD': '비밀번호',
+        'HOST': 'rds 엔드포인트',
         'PORT': '3306',
     }
 }
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
