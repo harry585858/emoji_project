@@ -113,14 +113,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test',
-        'USER': 'admin',
-        'PASSWORD': '비밀번호',
-        'HOST': 'rds 엔드포인트',
-        'PORT': '3306',
-    }
+    'default': env.db(),
 }
 
 # Password validation
