@@ -29,5 +29,4 @@ const ImageBox = ({ isEditMode }: { isEditMode?: boolean }) => {
     </div>
   );
 };
-
 export default ImageBox;
