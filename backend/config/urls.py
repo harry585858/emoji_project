@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from accounts.views import signup, delete
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -25,4 +25,6 @@ urlpatterns = [
     path('account/delete/', delete, name='delete'),  #회원탈퇴
     path('account/login/', TokenObtainPairView.as_view(), name='login'),  # 로그인(JWT 토큰발급)
     path('api/token/refresh/', TokenRefreshView.as_view()),  # 토큰 갱신
+
+    path('images/', include('upload.urls')),  # /images/upload/로 API 접근
 ]
