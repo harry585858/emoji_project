@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,19 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'accounts',  # 회원가입,회원탈퇴,로그인,로그아웃
-    'upload', #이미지 업로드
-    'storages', #pip로 설치한 저장 연동 앱
+    'accounts',  # 회원가입,로그인,로그아웃
+    'image',
 ]
-
-# AWS 계정
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = '<image-django-uploader>'
-AWS_S3_REGION_NAME = '<ap-northeast->'
-
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -109,11 +99,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'test',
         'USER': 'root',
-        'PASSWORD': '020204',
+        'PASSWORD': '0000',
         'HOST': 'localhost',
         'PORT': '3306',
     }
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -145,6 +137,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+#웹에서 접근할째 사용하는 경로
+MEDIA_URL = '/media/'
+#실제 서버에 저장되는 경로
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
