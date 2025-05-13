@@ -139,8 +139,15 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #AWS S3 설정
-
 AWS_STORAGE_BUCKET_NAME = 'keepic-image'
 AWS_S3_REGION_NAME = 'ap-northeast-2'
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'
+#쟝고 최선 버전에선 아래와 같은 형식 사용
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
