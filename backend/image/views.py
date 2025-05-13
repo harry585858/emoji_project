@@ -56,6 +56,6 @@ class ImageAPIView(APIView):
 class ImagesByTitleAPIView(APIView):
     #retrieve by title
     def get(self, request, title):
-        images = get_list_or_404(Images,title__icontains=title)
+        images = get_list_or_404(Images,title__istartswith=title)
         serializer = ImageSimpleSerializer(images, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
