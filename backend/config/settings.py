@@ -11,15 +11,21 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import environ
 import pymysql
 pymysql.install_as_MySQLdb()
 
+# env = environ.Env()
+# environ.Env.read_env()
 
-# Build paths inside  project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-v)+alcu8g$3o&@wj=+$5$b+e*gkizmnqdxk*dsiyc2wpox=0i$'
@@ -41,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'accounts',  # 회원가입,로그인,로그아웃
-    'storages',
+    'storages', #S3
     'image',
 ]
 
@@ -139,9 +145,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #AWS S3 설정
-AWS_STORAGE_BUCKET_NAME = 'keepic-image'
-AWS_S3_REGION_NAME = 'ap-northeast-2'
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
 #쟝고 최선 버전에선 아래와 같은 형식 사용
 STORAGES = {
     "default": {

@@ -14,7 +14,6 @@ class ImagesAPIView(APIView):
         images = Images.objects.all()
         serializer = ImageSimpleSerializer(images,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
     #image create
     def post(self, request):
         serializer = ImageCreateSerializer(data=request.data)
