@@ -3,5 +3,5 @@ from .views import ImagesAPIView, ImageAPIView
 
 urlpatterns = [
     path('', ImagesAPIView.as_view()),
-    path('/<int:pk>',ImageAPIView().as_view()),
+    path('<int:pk>/',ImageAPIView.as_view()),
 ]
