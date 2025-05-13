@@ -25,6 +25,7 @@ urlpatterns = [
     path('account/delete/', delete, name='delete'),  #회원탈퇴
     path('account/login/', TokenObtainPairView.as_view(), name='login'),  # 로그인(JWT 토큰발급)
     path('api/token/refresh/', TokenRefreshView.as_view()),  # 토큰 갱신
+    path('image/', include('image.urls')),
 
-    path('images/', include('upload.urls')),  # /images/upload/로 API 접근
+    # path('images/', include('upload.urls')),  # /images/upload/로 API 접근
 ]
