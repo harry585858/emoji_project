@@ -1,18 +1,23 @@
 from rest_framework import serializers
 from .models import Images
 
+
 class ImageSimpleSerializer(serializers.ModelSerializer):
+    imageurl = serializers.ImageField()
     class Meta:
         model = Images
-        fields = ('imageID', 'title', 'imageURL')
+        fields = ('imageid', 'title', 'imageurl')
 
 class ImageDetailSerializer(serializers.ModelSerializer):
+    imageurl = serializers.ImageField()
     class Meta:
         model = Images
-        fields = ('imageID', 'userID', 'title', 'createDate', 'viewCount',
-                  'imageURL')
+        fields = ('imageid', 'userid', 'title', 'createdate', 'viewcount',
+                  'imageurl')
 
 class ImageCreateSerializer(serializers.ModelSerializer):
+    imageurl = serializers.ImageField()
     class Meta:
         model = Images
-        fields = ('userID', 'title','imageURL')
+        fields = ('userid', 'title','imageurl')
+        read_only_fields = ('userid',) #userid body에서 입력 제외
