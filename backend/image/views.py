@@ -13,7 +13,6 @@ from .serializers import ImageSimpleSerializer,ImageDetailSerializer,ImageCreate
 class ImagesAPIView(APIView):
     #image list retrive
     permission_classes = [IsAuthenticated]
-
     def get(self, request):
         images = Images.objects.all()
         serializer = ImageSimpleSerializer(images,many=True)
