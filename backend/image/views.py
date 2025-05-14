@@ -6,10 +6,12 @@ from rest_framework.views import APIView
 
 from .models import Images
 from .serializers import ImageSimpleSerializer,ImageDetailSerializer,ImageCreateSerializer
+from rest_framework.permissions import IsAuthenticated
 
 #이미지들에 대한 기능 - 전체조회 / 업로드
 class ImagesAPIView(APIView):
     #image list retrive
+    permission_classes = [IsAuthenticated]  # 로그인 필수로 시행
     def get(self, request):
         images = Images.objects.all()
         serializer = ImageSimpleSerializer(images,many=True)
@@ -37,4 +39,3 @@ class ImageAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
