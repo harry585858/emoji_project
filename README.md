@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-이모티콘 공유 플렛폼?
+#HEAD
+이모티콘 공유 플렛폼
 https://github.com/harry585858/emoji_project.git
 =======
 2025-1 공개 SW 프로젝트 1조
