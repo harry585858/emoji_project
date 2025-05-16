@@ -69,7 +69,7 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",   # 프론트 개발 주소필요
+    "http://localhost:5173",   # 프론트 개발 주소필요
 ]
 
 ROOT_URLCONF = 'config.urls'
