@@ -5,6 +5,7 @@ import config from '../config';
 function Signinbox() {
   // 상태 관리: 아이디, 비밀번호, 비밀번호 확인, 오류 메시지
   const [id, setId] = useState('');
+  const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -37,8 +38,9 @@ function Signinbox() {
       setLoading(true);  // 로딩 상태 시작
 
       const response = await axios.post(`${config.apiurl}account/signup`, {
-        UserID: id,
+        userID: id,
         userPW: password,
+        userName: username,
       });
 
       // 회원가입 성공 처리
@@ -61,6 +63,12 @@ function Signinbox() {
       <div id="left"></div>
       <div id="right">
         <form onSubmit={checkPasswords}>
+        <input
+            type="text"
+            placeholder="username"
+            value={username}
+            onChange={(e) => setusername(e.target.value)} // ID 상태 업데이트
+          />
           <input
             type="text"
             placeholder="ID"

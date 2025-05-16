@@ -1,7 +1,7 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useLocation } from 'react-router-dom'; // useLocation 훅 임포트
 import '../assets/Header.css';
-
+import config from '../config';
 // 쿠키에서 특정 key (예: userID) 값을 찾는 함수
 const getCookie = (name: string): string | null => {
   const value = `; ${document.cookie}`;
@@ -41,12 +41,12 @@ function Header() {
     }
 
     try {
-      const response = await fetch('/search', {
+      const response = await fetch(`${config.apiurl}search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: search }),
+        body: JSON.stringify({ tag: search }),
       });
 
       const data = await response.json();

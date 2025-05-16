@@ -6,5 +6,5 @@
 *.pyo
 *.pyd
 
-# __pycache__ 디렉토리 무시
 __pycache__/
+migrations/
