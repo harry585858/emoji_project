@@ -2,3 +2,9 @@
 /shelf/
 /workspace.xml
 *.env
+*.pyc
+*.pyo
+*.pyd
+
+# __pycache__ 디렉토리 무시
+__pycache__/
