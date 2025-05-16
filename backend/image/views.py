@@ -12,7 +12,7 @@ from .serializers import ImageSimpleSerializer,ImageDetailSerializer,ImageCreate
 #이미지들에 대한 기능 - 전체조회 / 업로드
 class ImagesAPIView(APIView):
     #image list retrive
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # 로그인 필수로
     def get(self, request):
         images = Images.objects.all()
         serializer = ImageSimpleSerializer(images,many=True)
@@ -30,11 +30,9 @@ class ImageAPIView(APIView):
     #detail image
     def get(self, request, pk):
         image = get_object_or_404(Images, imageID=pk)
-
         #viewCount increase
         image.viewCount += 1
         image.save(update_fields=["viewCount"])
-
         serializer = ImageDetailSerializer(image)
         return Response(serializer.data, status=status.HTTP_200_OK)
     #modify image
