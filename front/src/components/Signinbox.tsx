@@ -37,17 +37,17 @@ function Signinbox() {
     try {
       setLoading(true);  // 로딩 상태 시작
 
-      const response = await axios.post(`${config.apiurl}account/signup`, {
+      const response = await axios.post(`${config.apiurl}accounts/signup/`, {
         userID: id,
         userPW: password,
-        userName: username,
+        //userName: username,
       });
 
       // 회원가입 성공 처리
       if (response.status === 201) {
         console.log('회원가입 성공:', response.data);
         // 예시: 회원가입 후 로그인 페이지로 리디렉션
-        window.location.href = '/login';  // 로그인 페이지로 이동
+        window.location.href = '/account/login';  // 로그인 페이지로 이동
       } else {
         setError('회원가입 실패! 다시 시도해 주세요.');
       }
