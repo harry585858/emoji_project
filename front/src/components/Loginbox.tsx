@@ -12,7 +12,7 @@ function Loginbox() {
     setError(null);
 
     try {
-      const response = await axios.post(`${config.apiurl}account/login/`, {
+      const response = await axios.post(`${config.apiurl}accounts/login/`, {
         userID: username,
         userPW: password,
       });
