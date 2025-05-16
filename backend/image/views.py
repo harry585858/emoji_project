@@ -12,7 +12,7 @@ from .serializers import ImageSimpleSerializer,ImageDetailSerializer,ImageCreate
 #이미지들에 대한 기능 - 전체조회 / 업로드
 class ImagesAPIView(APIView):
     #image list retrive
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request):
         images = Images.objects.all()
