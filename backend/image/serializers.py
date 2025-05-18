@@ -19,4 +19,4 @@ class ImageCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
         fields = ('userID', 'title','imageURL')
-        read_only_fields = ('userid',)  # userid body에서 입력 제외
+        read_only_fields = ('userID',)  # userid body에서 입력 제외
