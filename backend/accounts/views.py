@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 #데코레이터 DRF
 #회원가입
@@ -23,10 +25,20 @@ def signup(request):
 def login(request):
     userID = request.data.get('userID')
     userPW = request.data.get('userPW')
-    userID = authenticate(username=userID, userpassword=userPW)
-    if User is not None:
-        # 로그인 성공 (토큰 대신 단순 성공 메시지)
-        return Response({'message': '로그인 성공'}, status=status.HTTP_200_OK)
+
+    if not userID or not userPW:
+        return Response({'error': 'userID와 userPW는 필수입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = authenticate(username=userID, password=userPW)
+
+    if user is not None:
+        # 로그인 성공 - 토큰
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+            'message': '로그인 성공'
+        }, status=status.HTTP_200_OK)
     else:
         # 로그인 실패
         return Response({'error': '아이디/비밀번호가 일치하지 않습니다.'}, status=status.HTTP_401_UNAUTHORIZED)
