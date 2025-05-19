@@ -20,22 +20,22 @@ function Loginbox() {
       if (response.status !== 200) {
         throw new Error('로그인에 실패했습니다. 사용자명 또는 비밀번호를 확인하세요.');
       }
-
       const data = response.data;  // response.json() 대신 data에 직접 접근
-      if (data.access_token) {
-      localStorage.setItem('access_token', data.access_token);
-      setLogin(true);
+      if (data.access) {
+      localStorage.setItem('access_token', data.access);
       const userID = response.data.userID;
-      // 로그인 성공 후 추가 동작을 여기에 작성하세요.
-      document.cookie = `userID=${userID}; expires=Wed, 19 May 2025 12:00:00 UTC; path=/; Secure; SameSite=Strict`;
-    } else {
+      document.location.href = '/';
+      alert('로그인 성공');
+      document.cookie = `userID=${userID}; expires=Wed, 19 May 2025 12:00:00 UTC; path=/; SameSite=None`;
+    } 
+    else {
   setError('로그인에 실패했습니다. 사용자명 또는 비밀번호를 확인하세요.');
 }
 
     } catch (err) {
       setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
     }
-  };
+};
 
   return (
     <div id="main1">

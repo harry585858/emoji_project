@@ -2,7 +2,7 @@ import { useState, useEffect, FormEvent } from 'react';
 import { useLocation } from 'react-router-dom'; // useLocation 훅 임포트
 import '../assets/Header.css';
 import config from '../config';
-import logo from '../../public/logo.webp'
+import logo from '/src/assets/logo.webp'
 // 쿠키에서 특정 key (예: userID) 값을 찾는 함수
 const getCookie = (name: string): string | null => {
   const value = `; ${document.cookie}`;
