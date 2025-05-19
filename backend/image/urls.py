@@ -17,3 +17,4 @@ urlpatterns = [
     path('favorite/add/',FavoriteAPIView().as_view()), #추가
     path('favorite/del/<int:pk>',FavoriteAPIView().as_view()), #삭제
 ]
+
