@@ -73,10 +73,15 @@ class ImageAuthAPIView(APIView):
     # delete image
     def delete(self, request, pk):
         image = get_object_or_404(Images, imageID=pk)
-        if image.userID == request.user:
-            image.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        if image.userID != request.user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        #s3 삭제
+        if image.imageURL:
+            image.imageURL.delete(save=False)
+        #DB 삭제
+        image.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 #즐겨찾기 기능 - 조회/추가/삭제
 class FavoriteAPIView(APIView):
