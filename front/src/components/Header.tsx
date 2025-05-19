@@ -107,6 +107,7 @@ axios.get<ImageItem[]>(`${config.apiurl}image`)  // <-- API URL
       <div className="imgbox" key={idx}>
         <a href={`/detail?imageID=${item.imageID}`}>
           <img src={item.imageURL} alt={item.title} />
+          <p>{item.title}</p>
         </a>
       </div>
     ))}
