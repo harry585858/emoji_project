@@ -3,7 +3,13 @@ import { useLocation } from 'react-router-dom'; // useLocation 훅 임포트
 import '../assets/Header.css';
 import config from '../config';
 import logo from '/src/assets/logo.webp'
-// 쿠키에서 특정 key (예: userID) 값을 찾는 함수
+import axios from 'axios';
+interface ImageItem {
+  imageID: number;
+  title: string;
+  imageURL: string;
+}
+// 쿠키에서 특정 key
 const getCookie = (name: string): string | null => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -15,9 +21,8 @@ const getCookie = (name: string): string | null => {
 function Header() {
   const [login, setLogin] = useState(false);
   const [search, setSearch] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<ImageItem[]>([]);
   const location = useLocation(); // 현재 경로 정보 가져오기
-
   useEffect(() => {
     // userID 쿠키 확인하여 로그인 상태 설정
     const userID = getCookie('userID');
@@ -26,10 +31,20 @@ function Header() {
     }
 
     // 더미 이미지 데이터 설정
-    const dummyImages: string[] = Array.from({ length: 5 }, (_, i) =>
+    /*const dummyImages: string[] = Array.from({ length: 5 }, (_, i) =>
       `https://via.placeholder.com/150?text=Image${i + 1}`
+    `${config.apiurl}image`
     );
     setImages(dummyImages);
+    */
+   
+axios.get<ImageItem[]>(`${config.apiurl}image`)  // <-- API URL
+  .then(response => {
+    setImages(response.data);
+  })
+  .catch(error => {
+    console.error('에러 발생:', error);
+  });
   }, []);
 
   const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
@@ -56,13 +71,6 @@ function Header() {
       console.error('검색 요청 실패:', err);
     }
   };
-
-  function extractImageID(url: string) {
-    const parts = url.split('/');
-    const filename = parts[parts.length - 1]; // "12345.jpg"
-    const id = filename.split('.')[0]; // "12345"
-    return id;
-  }
 
   // 현재 경로가 '/'일 때만 이미지 표시
   const isHomePage = location.pathname === '/';
@@ -94,19 +102,16 @@ function Header() {
 
       {/* 현재 경로가 '/'일 때만 이미지 출력 */}
       {isHomePage && (
-        <div className="image-results">
-          {images.map((url, idx) => {
-            const imageID = extractImageID(url);
-            return (
-              <div className="imgbox" key={idx}>
-                <a href={`/detail?imageID=${imageID}`}>
-                  <img src={url} alt={`result-${idx}`} />
-                </a>
-              </div>
-            );
-          })}
-        </div>
-      )}
+  <div className="image-results">
+    {images.map((item: ImageItem, idx: number) => (
+      <div className="imgbox" key={idx}>
+        <a href={`/detail?imageID=${item.imageID}`}>
+          <img src={item.imageURL} alt={item.title} />
+        </a>
+      </div>
+    ))}
+  </div>
+)}
     </>
   );
 }
