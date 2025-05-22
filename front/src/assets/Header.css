@@ -41,15 +41,3 @@ html, body {
   align-items: center;
   text-align: center; /* 텍스트 중앙 정렬 */
 }
-.image-results{
-  width: 100%;
-  height:100%;
-  align-items: center;
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-}
-.imgbox{
-  width:10em;
-  height: 10em;
-}
