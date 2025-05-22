@@ -27,7 +27,6 @@ function Loginbox() {
       document.cookie = `userID=${userID}; path=/; SameSite=None`;//설정필요
       document.location.href = '/';
       alert('로그인 성공');
-
     } 
     else {
   setError('로그인에 실패했습니다. 사용자명 또는 비밀번호를 확인하세요.');
