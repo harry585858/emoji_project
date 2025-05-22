@@ -24,9 +24,10 @@ function Loginbox() {
       if (data.access) {
       localStorage.setItem('access_token', data.access);
       const userID = response.data.userID;
+      document.cookie = `userID=${userID}; path=/; SameSite=None`;//설정필요
       document.location.href = '/';
       alert('로그인 성공');
-      document.cookie = `userID=${userID}; expires=Wed, 19 May 2025 12:00:00 UTC; path=/; SameSite=None`;
+
     } 
     else {
   setError('로그인에 실패했습니다. 사용자명 또는 비밀번호를 확인하세요.');
