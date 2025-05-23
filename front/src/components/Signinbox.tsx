@@ -52,7 +52,7 @@ function Signinbox() {
         setError('회원가입 실패! 다시 시도해 주세요.');
       }
     } catch (error) {
-      setError('회원가입 실패! 서버와 연결할 수 없습니다.');
+      setError('회원가입 실패! 존재하는 아이디');
     } finally {
       setLoading(false);  // 로딩 상태 종료
     }

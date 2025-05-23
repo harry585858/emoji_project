@@ -60,7 +60,7 @@ function App() {
   return (
     <>
       <br />
-      <h1>최근 조회한 이미지</h1>
+     { login ?  <h1>최근 조회한 이미지</h1> : null}
       <div className="image-results">
         {images.map((item: ImageItem, idx: number) => (
           <div className="imgbox" key={idx}>
@@ -71,7 +71,7 @@ function App() {
           </div>
         ))}
       </div>
-      <a href='/upload'>업로드</a>
+      { login ? <a href='/upload'>업로드</a> : null}
     </>
   );
 }
