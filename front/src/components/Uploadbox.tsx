@@ -2,10 +2,13 @@ import { useState, useCallback } from 'react';
 import axios from 'axios';
 import config from '../config';
 import '../assets/Uploadbox.css';
+
 function Uploadbox() {
   const [preview, setPreview] = useState<string | null>(null);
   const [title, setTitle] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
 
   // 파일 드롭 처리
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -22,7 +25,23 @@ function Uploadbox() {
     e.preventDefault();
   };
 
-  // 전송 버튼 클릭 시
+  // 태그 입력 처리
+  const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if ((e.key === ' ' || e.key === 'Enter') && tagInput.trim() !== '') {
+      e.preventDefault();
+      const newTag = tagInput.trim();
+      if (!tags.includes(newTag)) {
+        setTags([...tags, newTag]);
+      }
+      setTagInput('');
+    }
+  };
+
+  const handleTagRemove = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
+  // 업로드 처리
   const handleUpload = () => {
     if (!file || !title) {
       alert('제목과 이미지를 모두 입력해주세요.');
@@ -32,10 +51,12 @@ function Uploadbox() {
     const formData = new FormData();
     formData.append('imageURL', file);
     formData.append('title', title);
+    formData.append('tags', JSON.stringify(tags)); // 태그를 JSON 문자열로 전송
     const token = localStorage.getItem('access_token');
     axios
       .post(`${config.apiurl}image/add/`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data',
+        headers: {
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
         withCredentials: false,
@@ -43,10 +64,10 @@ function Uploadbox() {
       .then(res => {
         console.log('업로드 성공:', res.data);
         alert('업로드 성공!');
-        // 초기화
         setTitle('');
         setPreview(null);
         setFile(null);
+        setTags([]);
       })
       .catch(err => {
         console.error('업로드 실패:', err);
@@ -77,6 +98,31 @@ function Uploadbox() {
         <p>이미지를 여기로 드래그 앤 드롭하세요</p>
         {preview && <img src={preview} alt="preview" style={{ width: '200px', marginTop: '10px' }} />}
       </div>
+
+      <div style={{ marginTop: '10px' }}>
+        <input
+          type="text"
+          value={tagInput}
+          onChange={(e) => setTagInput(e.target.value)}
+          onKeyDown={handleTagInputKeyDown}
+          placeholder="태그를 입력하고 Space 또는 Enter"
+          style={{ width: '100%', padding: '5px' }}
+        />
+        <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '10px', gap: '5px' }}>
+          {tags.map((t, idx) => (
+            <span key={idx} style={{ background: '#eee', padding: '5px', borderRadius: '4px' }}>
+              {t}
+              <button
+                onClick={() => handleTagRemove(idx)}
+                style={{ marginLeft: '5px', cursor: 'pointer', color: 'red', border: 'none', background: 'transparent' }}
+              >
+                ✖
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
+
       <button
         onClick={handleUpload}
         style={{

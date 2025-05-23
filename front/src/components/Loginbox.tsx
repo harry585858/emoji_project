@@ -27,12 +27,15 @@ function Loginbox() {
       document.cookie = `userID=${userID}; path=/; SameSite=None`;//설정필요
       document.location.href = '/';
       alert('로그인 성공');
-    } 
-    else {
+    } else {
   setError('로그인에 실패했습니다. 사용자명 또는 비밀번호를 확인하세요.');
+  alert('로그인실패');
 }
-
     } catch (err) {
+      if(err.status == 401){
+        alert('아이디 또는 비밀번호가 맞지 않습니다');
+        return;
+      }
       setError(err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.');
     }
 };
