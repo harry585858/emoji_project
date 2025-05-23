@@ -1,37 +1,77 @@
 import { useState, useEffect } from 'react';
 import '../assets/App.css';
-import Emoji from './Emoji';  // Emoji 컴포넌트
 import config from '../config';
-// 첫 화면 내부 이미지 모음
+import axios from 'axios';
+
+// 이미지 데이터 인터페이스
 interface ImageItem {
   imageID: number;
   title: string;
   imageURL: string;
 }
+
+// 쿠키 가져오기 함수
+const getCookie = (name: string): string | null => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+  return null;
+};
+
 function App() {
+  const [recimages, setrecImages] = useState<ImageItem[]>([]);
   const [images, setImages] = useState<ImageItem[]>([]);
-  // 서버에서 이미지 데이터 가져오기 (예: API 호출)
+  const [login, setLogin] = useState(false);
+
+  // 이미지 불러오기
+  // useEffect(() => {
+  //   fetch(`${config.apiurl}image`)
+  //     .then(response => response.json())
+  //     .then(data => setImages(data))
+  //     .catch(error => console.error('이미지 로드 실패:', error));
+  // }, []);
+
+  // 로그인 상태 확인
   useEffect(() => {
-    fetch(`${config.apiurl}image`)  // 실제 이미지 API URL로 변경
-      .then(response => response.json())
-      .then(data => setImages(data))  // 서버에서 받은 이미지 데이터 상태에 저장
-      .catch(error => console.error('이미지 로드 실패:', error));
+    const userID = getCookie('userID');
+    if (userID) {
+      setLogin(true);
+    }
   }, []);
+
+  // 로그인 상태일 때 추천 이미지 불러오기
+  useEffect(() => {
+    if (login) {
+      const token = localStorage.getItem('access_token');
+      axios
+        .get(`${config.apiurl}image/history/`, {
+          headers: { 'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+          withCredentials: false, // 쿠키 인증 필요시
+        })
+        .then(res => {
+          setrecImages(res.data);
+        })
+        .catch(err => console.error('추천 이미지 로드 실패:', err));
+    }
+  }, [login]);
 
   return (
     <>
-    <br></br>
-        <h1>이모티콘</h1>
-        <div className="image-results">
-    {images.map((item: ImageItem, idx: number) => (
-      <div className="imgbox" key={idx}>
-        <a href={`/detail?imageID=${item.imageID}`}>
-          <img src={item.imageURL} alt={item.title} />
-          <p>{item.title}</p>
-        </a>
+      <br />
+      <h1>최근 조회한 이미지</h1>
+      <div className="image-results">
+        {images.map((item: ImageItem, idx: number) => (
+          <div className="imgbox" key={idx}>
+            <a href={`/detail?imageID=${item.imageID}`}>
+              <img src={item.imageURL} alt={item.title} />
+              <p>{item.title}</p>
+            </a>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
+      <a href='/upload'>업로드</a>
     </>
   );
 }
