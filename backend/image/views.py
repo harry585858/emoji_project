@@ -75,7 +75,6 @@ class ImageAuthAPIView(APIView):
         image = get_object_or_404(Images, imageID=pk)
         if image.userID != request.user:
             return Response(status=status.HTTP_403_FORBIDDEN)
-
         #s3 삭제
         if image.imageURL:
             image.imageURL.delete(save=False)
