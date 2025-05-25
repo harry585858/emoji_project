@@ -52,6 +52,14 @@ class ImagesByTitleAPIView(APIView):
         serializer = ImageSimpleSerializer(images, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+#내가 올린 이미지 조회
+class MyImagesAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        images = Images.objects.filter(userID=request.user)
+        serializer = ImageSimpleSerializer(images, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 #로그인 인증이 필요한 기능 - 업로드 / 수정 / 삭제
 class ImageAuthAPIView(APIView):
     permission_classes = [IsAuthenticated]
