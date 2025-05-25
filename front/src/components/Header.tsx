@@ -80,11 +80,16 @@ const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
         </form>)
 :null }
         {login ? (
-          <button id="headerbtn" onClick={() => { window.location.href = '/mypage'; }}>
+          <div>
+            <button className="headerbtn" onClick={() => { window.location.href = '/upload'; }}>
+            업로드
+          </button>
+          <button className="headerbtn" onClick={() => { window.location.href = '/mypage'; }}>
             마이페이지
           </button>
+          </div>
         ) : (
-          <button id="headerbtn" onClick={() => { window.location.href = '/account/login'; }}>
+          <button className="headerbtn" onClick={() => { window.location.href = '/account/login'; }}>
             로그인
           </button>
         )}

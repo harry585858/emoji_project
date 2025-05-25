@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../assets/Header.css';
 import config from '../config';
 import axios from 'axios';
+import banner from '../assets/banner.png';
 function Loginbox() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -31,7 +32,8 @@ function Loginbox() {
   setError('로그인에 실패했습니다. 사용자명 또는 비밀번호를 확인하세요.');
   alert('로그인실패');
 }
-    } catch (err) {
+    } catch (err)
+    {
       if(err.status == 401){
         alert('아이디 또는 비밀번호가 맞지 않습니다');
         return;
@@ -42,7 +44,9 @@ function Loginbox() {
 
   return (
     <div id="main1">
-      <div id="left"></div>
+      <div id="left">
+        <img src={banner}></img>
+      </div>
       <div id="right">
         <form onSubmit={handleLogin}>
           <input

@@ -71,7 +71,6 @@ function App() {
           </div>
         ))}
       </div>
-      { login ? <a href='/upload'>업로드</a> : null}
     </>
   );
 }
