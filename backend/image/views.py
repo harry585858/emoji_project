@@ -23,8 +23,8 @@ class ImagesAPIView(APIView):
 #이미지 하나에 대한 기능 - 상세조회
 class ImageAPIView(APIView):
     #detail image
-    def get(self, request, pk):
-        image = get_object_or_404(Images, imageID=pk)
+    def get(self, request, imageID):
+        image = get_object_or_404(Images, imageID=imageID)
 
         #viewCount increase
         image.viewCount += 1
@@ -32,14 +32,14 @@ class ImageAPIView(APIView):
 
         # 로그인된 유저이면 시청기록 추가
         if request.user.is_authenticated:
-            history, created = Historys.objects.get_or_create(
-                userID=request.user,
-                imageID=image,
-            )
+            print('확인')
+            history, created = Historys.objects.get_or_create(userID=request.user, imageID=image)
+
             # 기존 기록의 createDate를 현재 시간으로 갱신
             if not created:
                 history.watchDate = timezone.now()
                 history.save()
+
 
         serializer = ImageDetailSerializer(image)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -63,16 +63,16 @@ class ImageAuthAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     # modify image
-    def put(self, request, pk):
-        image = get_object_or_404(Images, imageID=pk)
+    def put(self, request, imageID):
+        image = get_object_or_404(Images, imageID=imageID)
         serializer = ImageCreateSerializer(image, data=request.data)
         if serializer.is_valid():
             serializer.save(userID=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     # delete image
-    def delete(self, request, pk):
-        image = get_object_or_404(Images, imageID=pk)
+    def delete(self, request, imageID):
+        image = get_object_or_404(Images, imageID=imageID)
         if image.userID != request.user:
             return Response(status=status.HTTP_403_FORBIDDEN)
         #s3 삭제
@@ -87,8 +87,8 @@ class FavoriteAPIView(APIView):
     permission_classes = [IsAuthenticated]
     #즐겨찾기 조회
     def get(self,request):
-        favorites = get_list_or_404(Favoriteimages,userID=request.user)
-        images = get_list_or_404(Images,imageURL__in=favorites.imageURL)
+        favorites = Favoriteimages.objects.filter(userID=request.user).values_list('imageID', flat=True)
+        images = Images.objects.filter(imageID__in=favorites)
         serializer = ImageSimpleSerializer(images, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     #즐겨찾기에 추가
@@ -101,5 +101,22 @@ class FavoriteAPIView(APIView):
         favorite = get_object_or_404(Favoriteimages, imageID=imageID, userID=request.user)
         if favorite.userID == request.user:
             favorite.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+#시청기록 기능 - 조회/삭제
+class HistoryAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    #시청기록 조회
+    def get(self,request):
+        history = Historys.objects.filter(userID=request.user).values_list('imageID', flat=True)
+        images = get_list_or_404(Images,imageID__in=history)
+        serializer = ImageSimpleSerializer(images, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    #시청기록 삭제
+    def delete(self,request, imageID):
+        history = get_object_or_404(Historys, imageID=imageID, userID=request.user)
+        if history.userID == request.user:
+            history.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_403_FORBIDDEN)
