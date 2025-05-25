@@ -17,7 +17,7 @@ class ImagesAPIView(APIView):
     #image list retrive
     def get(self, request):
         images = Images.objects.all().order_by('-createDate')
-        serializer = ImageSimpleSerializer(images,many=True)
+        serializer = ImageSimpleSerializer(images,many=True,context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #전체조회 - 조회수 기준
@@ -25,7 +25,7 @@ class ImagesViewCountAPIView(APIView):
     #image list retrive
     def get(self, request):
         images = Images.objects.all().order_by('-viewCount')
-        serializer = ImageSimpleSerializer(images,many=True)
+        serializer = ImageSimpleSerializer(images,many=True,context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #이미지 하나에 대한 기능 - 상세조회
@@ -49,7 +49,7 @@ class ImageAPIView(APIView):
                 history.save()
 
 
-        serializer = ImageDetailSerializer(image)
+        serializer = ImageDetailSerializer(image,context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #제목으로 조회한 이미지들
@@ -57,7 +57,7 @@ class ImagesByTitleAPIView(APIView):
     #retrieve by title
     def get(self, request, title):
         images = get_list_or_404(Images,title__istartswith=title)
-        serializer = ImageSimpleSerializer(images, many=True)
+        serializer = ImageSimpleSerializer(images, many=True,context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #내가 올린 이미지 조회
@@ -65,7 +65,7 @@ class MyImagesAPIView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
         images = Images.objects.filter(userID=request.user).order_by('-createDate')
-        serializer = ImageSimpleSerializer(images, many=True)
+        serializer = ImageSimpleSerializer(images, many=True,context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 #로그인 인증이 필요한 기능 - 업로드 / 수정 / 삭제
@@ -105,7 +105,7 @@ class FavoriteAPIView(APIView):
     def get(self,request):
         favorites = Favoriteimages.objects.filter(userID=request.user).order_by('-createDate').select_related('imageID')
         images = [f.imageID for f in favorites]
-        serializer = ImageSimpleSerializer(images, many=True)
+        serializer = ImageSimpleSerializer(images, many=True,context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     #즐겨찾기에 추가
     def post(self, request):
@@ -127,7 +127,7 @@ class HistoryAPIView(APIView):
     def get(self,request):
         history = Historys.objects.filter(userID=request.user).order_by('-watchDate').select_related('imageID')
         images = [h.imageID for h in history]
-        serializer = ImageSimpleSerializer(images, many=True)
+        serializer = ImageSimpleSerializer(images, many=True,context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     #시청기록 삭제
     def delete(self,request, imageID):
