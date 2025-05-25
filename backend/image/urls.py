@@ -1,10 +1,12 @@
 from django.urls import path, include
 from .views import ImagesAPIView, ImageAPIView, ImagesByTitleAPIView, ImageAuthAPIView, FavoriteAPIView, HistoryAPIView, \
-    MyImagesAPIView
+    MyImagesAPIView, ImagesViewCountAPIView
 
 urlpatterns = [
     #이미지들에 대한 기능 - 전체조회
     path('', ImagesAPIView.as_view()), #전체조회
+    #전체조회 - 조회수 정렬
+    path('orderByViewCount/', ImagesViewCountAPIView.as_view()), #전체조회
     #이미지 하나에 대한 기능 - 상세조회
     path('detail/<int:imageID>/', ImageAPIView.as_view()),#상세조회
     #제목으로 조회한 이미지들

@@ -12,11 +12,19 @@ from rest_framework.views import APIView
 from .models import Images, Historys, Favoriteimages
 from .serializers import ImageSimpleSerializer,ImageDetailSerializer,ImageCreateSerializer
 
-#이미지들에 대한 기능 - 전체조회
+#이미지들에 대한 기능 - 전체조회 최신순
 class ImagesAPIView(APIView):
     #image list retrive
     def get(self, request):
-        images = Images.objects.all()
+        images = Images.objects.all().order_by('-createDate')
+        serializer = ImageSimpleSerializer(images,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+#전체조회 - 조회수 기준
+class ImagesViewCountAPIView(APIView):
+    #image list retrive
+    def get(self, request):
+        images = Images.objects.all().order_by('-viewCount')
         serializer = ImageSimpleSerializer(images,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -56,7 +64,7 @@ class ImagesByTitleAPIView(APIView):
 class MyImagesAPIView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request):
-        images = Images.objects.filter(userID=request.user)
+        images = Images.objects.filter(userID=request.user).order_by('-createDate')
         serializer = ImageSimpleSerializer(images, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -95,8 +103,8 @@ class FavoriteAPIView(APIView):
     permission_classes = [IsAuthenticated]
     #즐겨찾기 조회
     def get(self,request):
-        favorites = Favoriteimages.objects.filter(userID=request.user).values_list('imageID', flat=True)
-        images = Images.objects.filter(imageID__in=favorites)
+        favorites = Favoriteimages.objects.filter(userID=request.user).order_by('-createDate').select_related('imageID')
+        images = [f.imageID for f in favorites]
         serializer = ImageSimpleSerializer(images, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     #즐겨찾기에 추가
@@ -117,8 +125,8 @@ class HistoryAPIView(APIView):
     permission_classes = [IsAuthenticated]
     #시청기록 조회
     def get(self,request):
-        history = Historys.objects.filter(userID=request.user).values_list('imageID', flat=True)
-        images = get_list_or_404(Images,imageID__in=history)
+        history = Historys.objects.filter(userID=request.user).order_by('-watchDate').select_related('imageID')
+        images = [h.imageID for h in history]
         serializer = ImageSimpleSerializer(images, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     #시청기록 삭제
