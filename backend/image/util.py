@@ -4,12 +4,13 @@ import numpy as np
 from tensorflow.keras.models import load_model
 
 
-def makeTag(image_path):
+def makeTag_from_file(image):
     classes = ['Happiness', 'Fear', 'Sadness', 'Surprised']
 
     model = load_model('tagging_model_from_csv_128.h5')
 
-    img = cv2.imread(image_path)
+    file_bytes = np.asarray(bytearray(image.read()), dtype=np.uint8)
+    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     img_resized = cv2.resize(img, (150, 150))
     img_normalized = img_resized / 255.0
     input_tensor = np.expand_dims(img_normalized, axis=0)

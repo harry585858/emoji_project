@@ -11,6 +11,8 @@ from rest_framework.views import APIView
 
 from .models import Images, Historys, Favoriteimages
 from .serializers import ImageSimpleSerializer,ImageDetailSerializer,ImageCreateSerializer
+from .util import image_to_braille, makeTag_from_file
+
 
 #이미지들에 대한 기능 - 전체조회 최신순
 class ImagesAPIView(APIView):
@@ -42,12 +44,10 @@ class ImageAPIView(APIView):
         if request.user.is_authenticated:
             print('확인')
             history, created = Historys.objects.get_or_create(userID=request.user, imageID=image)
-
             # 기존 기록의 createDate를 현재 시간으로 갱신
             if not created:
                 history.watchDate = timezone.now()
                 history.save()
-
 
         serializer = ImageDetailSerializer(image,context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -136,3 +136,23 @@ class HistoryAPIView(APIView):
             history.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_403_FORBIDDEN)
+
+#태그 자동 생성 기능
+class TagAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        image_file = request.FILES.get('imageURL')
+        if not image_file:
+            return Response({'error': 'No image file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        predicted_tags = makeTag_from_file(image_file)
+        return Response({'tags': predicted_tags}, status=status.HTTP_200_OK)
+
+#도트아트로 변환
+class TextChangeAPIView(APIView):
+    def get(self,request, imageID):
+        image = get_object_or_404(Images, imageID=imageID)
+        text = image_to_braille(image.imageURL)
+        return Response({'text':text},status=status.HTTP_200_OK)
+
