@@ -19,7 +19,17 @@ from .util import image_to_braille, makeTag_from_file
 class ImagesAPIView(APIView):
     #image list retrive
     def get(self, request):
-        images = Images.objects.all().order_by('-createDate')
+        #정렬 파라미터 받기 (기본값: -createDate)
+        sort_param = request.query_params.get('sort', '-createDate')
+
+        sort_field = sort_param.lstrip('-')
+        # 허용된 필드 목록
+        ALLOWED_SORT_FIELDS = ['createDate', 'title', 'viewCount']
+        #유효성 검사
+        if sort_field not in ALLOWED_SORT_FIELDS:
+            sort_param = '-createDate'  # 기본값으로 대체
+
+        images = Images.objects.all().order_by(sort_param)
         paginator = PageNumberPagination()
         paginator.page_size = 10 #한 페이지에 10개씩
 
