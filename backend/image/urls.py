@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import ImagesAPIView, ImageAPIView, ImagesByTitleAPIView, ImageAuthAPIView, FavoriteAPIView, HistoryAPIView, \
-    MyImagesAPIView, ImagesViewCountAPIView
+    MyImagesAPIView, ImagesViewCountAPIView, TagAPIView, TextChangeAPIView
 
 urlpatterns = [
     #이미지들에 대한 기능 - 전체조회
@@ -24,5 +24,8 @@ urlpatterns = [
     #시청기록 기능 - 조회 / 삭제
     path('history/', HistoryAPIView().as_view()),  # 조회
     path('history/del/<int:imageID>', HistoryAPIView().as_view()),  # 삭제
+    #추가 기능 - 태그자동생성 / 도트변환
+    path('tag/', TagAPIView().as_view()),  # 조회
+    path('textChange/<int:imageID>', TextChangeAPIView().as_view()),  # 삭제
 ]
 
