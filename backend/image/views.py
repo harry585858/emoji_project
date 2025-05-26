@@ -1,6 +1,7 @@
 import time
 
 from django.utils import timezone
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -19,16 +20,24 @@ class ImagesAPIView(APIView):
     #image list retrive
     def get(self, request):
         images = Images.objects.all().order_by('-createDate')
-        serializer = ImageSimpleSerializer(images,many=True,context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = PageNumberPagination()
+        paginator.page_size = 10 #한 페이지에 10개씩
+
+        result_page = paginator.paginate_queryset(images, request)
+        serializer = ImageSimpleSerializer(result_page,many=True,context={'request': request})
+        return paginator.get_paginated_response(serializer.data)
 
 #전체조회 - 조회수 기준
 class ImagesViewCountAPIView(APIView):
     #image list retrive
     def get(self, request):
         images = Images.objects.all().order_by('-viewCount')
-        serializer = ImageSimpleSerializer(images,many=True,context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # 한 페이지에 10개씩
+
+        result_page = paginator.paginate_queryset(images, request)
+        serializer = ImageSimpleSerializer(result_page,many=True,context={'request': request})
+        return paginator.get_paginated_response(serializer.data)
 
 #이미지 하나에 대한 기능 - 상세조회
 class ImageAPIView(APIView):
@@ -56,9 +65,13 @@ class ImageAPIView(APIView):
 class ImagesByTitleAPIView(APIView):
     #retrieve by title
     def get(self, request, title):
-        images = get_list_or_404(Images,title__istartswith=title)
-        serializer = ImageSimpleSerializer(images, many=True,context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        images = Images.objects.filter(title__istartswith=title).order_by('-createDate')
+        paginator = PageNumberPagination()
+        paginator.page_size = 10  # 한 페이지에 10개씩
+
+        result_page = paginator.paginate_queryset(images, request)
+        serializer = ImageSimpleSerializer(result_page, many=True,context={'request': request})
+        return paginator.get_paginated_response(serializer.data)
 
 #내가 올린 이미지 조회
 class MyImagesAPIView(APIView):
