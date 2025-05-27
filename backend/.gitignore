@@ -5,7 +5,7 @@
 *.pyc
 *.pyo
 *.pyd
-venv
+venv/
 *.cfg
 __pycache__/
 migrations/
