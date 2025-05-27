@@ -45,7 +45,7 @@ function App() {
       const token = localStorage.getItem('access_token');
       axios
         .get(`${config.apiurl}image/history/`, {
-          headers: { 'Content-Type': 'multipart/form-data',
+          headers: {
           Authorization: `Bearer ${token}`,
         },
           withCredentials: false, // 쿠키 인증 필요시
