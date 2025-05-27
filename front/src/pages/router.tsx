@@ -5,6 +5,7 @@ import App from "../components/App";
 import Mypage from "./Mypage";
 import Detail from "./Detail";
 import Edit from "./Edit";
+import Upload from "./Upload";
 
 function RouterConfig(){
     return(
@@ -15,6 +16,7 @@ function RouterConfig(){
             <Route path="/mypage" element={<Mypage />}/>
             <Route path="/Detail" element={<Detail />}/>
             <Route path="/Edit" element={<Edit />}/>
+            <Route path="/Upload" element={<Upload />}/>
         </Routes>
     )
 }

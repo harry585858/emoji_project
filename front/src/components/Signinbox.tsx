@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import '../assets/Header.css';
 import axios from 'axios';
 import config from '../config';
+import banner from '../assets/banner.png';
 function Signinbox() {
   // 상태 관리: 아이디, 비밀번호, 비밀번호 확인, 오류 메시지
   const [id, setId] = useState('');
@@ -52,7 +53,7 @@ function Signinbox() {
         setError('회원가입 실패! 다시 시도해 주세요.');
       }
     } catch (error) {
-      setError('회원가입 실패! 서버와 연결할 수 없습니다.');
+      setError('회원가입 실패! 존재하는 아이디');
     } finally {
       setLoading(false);  // 로딩 상태 종료
     }
@@ -60,7 +61,9 @@ function Signinbox() {
 
   return (
     <div id="main1">
-      <div id="left"></div>
+      <div id="left">
+        <img src={banner}></img>
+      </div>
       <div id="right">
         <form onSubmit={checkPasswords}>
         <input
