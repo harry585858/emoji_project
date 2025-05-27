@@ -1,0 +1,150 @@
+.mypage-container {
+  display: flex;
+  height: 100vh;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.mypage-sidebar {
+  width: 200px;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 12px;
+  background-color: #f8f8f8;
+}
+
+.mypage-content {
+  flex: 1;
+  display: flex;            /* 중앙 정렬을 위해 flex 설정 */
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.mypage-button {
+  padding: 12px 16px;
+  font-size: 16px;
+  color: #333333;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.mypage-button:hover {
+  background-color: #e6e6e6;
+  color: #000000;
+}
+
+
+.mypage-button.selected {
+  border: 2px solid #007bff;
+  background-color: #eaf2ff;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.image-placeholder {
+  width: 140px;
+  height: 140px;
+  background-color: #d3d3d3;
+  border-radius: 12px;
+}
+
+.grid-box-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding-top: 40px;
+}
+
+.grid-box-container.darker .image-placeholder {
+  background-color: #b0b0b0;
+}
+
+/* 공통 중앙 정렬 wrapper */
+.centered-section {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.password-change {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-size: 16px;
+  align-items: center;
+}
+
+.password-change label {
+  display: flex;
+  flex-direction: row; /* 라벨과 인풋 나란히 */
+  align-items: center;
+  gap: 12px;
+}
+
+.password-change input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 250px;
+}
+
+
+/* 탈퇴 섹션 */
+.withdraw-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  font-size: 18px;
+}
+
+.withdraw-buttons {
+  display: flex;
+  gap: 32px; /* 버튼 간 간격 증가 */
+}
+
+.cancel-button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-button, .cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.confirm-button:hover,
+.cancel-button:hover {
+  background-color: #007bff;
+}
+
+.confirm-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.confirm-button:hover {
+  background-color: #0056b3;
+}
