@@ -6,6 +6,5 @@
 *.pyo
 *.pyd
 venv/
-*.cfg
 __pycache__/
 migrations/
