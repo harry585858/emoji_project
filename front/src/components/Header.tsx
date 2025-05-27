@@ -8,6 +8,7 @@ interface ImageItem {
   imageID: number;
   title: string;
   imageURL: string;
+  is_favorite:boolean;
 }
 // 쿠키에서 특정 key
 const getCookie = (name: string): string | null => {
@@ -32,12 +33,12 @@ function Header() {
   axios.get(`${config.apiurl}image`)
     .then(response => {
       const data = response.data;
-      if (Array.isArray(data)) {
-        setImages(data);
-      } else {
-        console.error("응답이 배열이 아님:", data);
-        setImages([]); // fallback
-      }
+      if (Array.isArray(data.results)) {
+      setImages(data.results);
+    } else {
+      console.error("응답에 results가 없음:", data);
+      setImages([]);
+}
     })
     .catch(error => {
       console.error('에러 발생:', error);
