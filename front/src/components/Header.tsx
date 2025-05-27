@@ -24,28 +24,26 @@ function Header() {
   const [images, setImages] = useState<ImageItem[]>([]);
   const location = useLocation(); // 현재 경로 정보 가져오기
   useEffect(() => {
-    // userID 쿠키 확인하여 로그인 상태 설정
-    const userID = getCookie('userID');
-    if (userID) {
-      setLogin(true); // 쿠키에 userID가 있으면 로그인 상태로 설정
-    }
+  const userID = getCookie('userID');
+  if (userID) {
+    setLogin(true);
+  }
 
-    // 더미 이미지 데이터 설정
-    /*const dummyImages: string[] = Array.from({ length: 5 }, (_, i) =>
-      `https://via.placeholder.com/150?text=Image${i + 1}`
-    `${config.apiurl}image`
-    );
-    setImages(dummyImages);
-    */
-   
-axios.get<ImageItem[]>(`${config.apiurl}image`)  // <-- API URL
-  .then(response => {
-    setImages(response.data);
-  })
-  .catch(error => {
-    console.error('에러 발생:', error);
-  });
-  }, []);
+  axios.get(`${config.apiurl}image`)
+    .then(response => {
+      const data = response.data;
+      if (Array.isArray(data)) {
+        setImages(data);
+      } else {
+        console.error("응답이 배열이 아님:", data);
+        setImages([]); // fallback
+      }
+    })
+    .catch(error => {
+      console.error('에러 발생:', error);
+      setImages([]); // 에러 시에도 빈 배열
+    });
+}, []);
 
 const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
