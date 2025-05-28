@@ -4,6 +4,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from django.conf import settings
 import boto3
+import random
 
 def list_ads_image_urls():
     # S3 이미지 URL 광고 이미지 받아 오는 코드 함수 형태로 추가
@@ -28,6 +29,19 @@ def list_ads_image_urls():
                 url = f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{key}"
                 urls.append(url)
     return urls
+
+def insert_ads_randomly(images, ads):
+    result = []
+    ad_count = len(ads)
+    image_count = len(images)
+
+    # 광고 삽입 위치 랜덤 선택
+    for ad in ads:
+        insert_pos = random.randint(0, len(images))
+        # images 리스트를 나누어 광고 삽입
+        images = images[:insert_pos] + [ad] + images[insert_pos:]
+
+    return images
 
 def makeTag_from_file(image):
     classes = ['Happiness', 'Fear', 'Sadness', 'Surprised']
