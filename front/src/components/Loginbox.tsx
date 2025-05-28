@@ -24,8 +24,8 @@ function Loginbox() {
       const data = response.data;  // response.json() 대신 data에 직접 접근
       if (data.access) {
       localStorage.setItem('access_token', data.access);
-      const userID = response.data.userID;
-      document.cookie = `userID=${userID}; path=/; SameSite=None`;//설정필요
+      //const userID = response.data.userID;
+      document.cookie = `userID=${username}; path=/; SameSite=None`;//설정필요
       document.location.href = '/';
       alert('로그인 성공');
     } else {
