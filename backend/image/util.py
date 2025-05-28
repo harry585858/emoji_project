@@ -5,7 +5,7 @@ from tensorflow.keras.models import load_model
 from django.conf import settings
 import boto3
 
-def list_aAdsds_image_urls():
+def list_ads_image_urls():
     # S3 이미지 URL 광고 이미지 받아 오는 코드 함수 형태로 추가
     s3 = boto3.client(
         's3',
