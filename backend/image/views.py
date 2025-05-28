@@ -1,6 +1,5 @@
-import time
-
 from django.utils import timezone
+
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -12,8 +11,9 @@ from rest_framework.views import APIView
 
 from .models import Images, Historys, Favoriteimages
 from .serializers import ImageSimpleSerializer,ImageDetailSerializer,ImageCreateSerializer
-from .util import image_to_braille, makeTag_from_file
+from .util import image_to_braille, makeTag_from_file, list_ads_image_urls, insert_ads_randomly
 
+import random
 
 #이미지들에 대한 기능 - 전체조회 최신순
 class ImagesAPIView(APIView):
@@ -35,7 +35,25 @@ class ImagesAPIView(APIView):
 
         result_page = paginator.paginate_queryset(images, request)
         serializer = ImageSimpleSerializer(result_page,many=True,context={'request': request})
-        return paginator.get_paginated_response(serializer.data)
+
+        # 광고 이미지 URL 리스트 불러오기
+        # 한 페이지에 랜덤하게 하나 삽입
+        ads_urls = list_ads_image_urls()
+        if ads_urls:
+            # 광고 이미지를 랜덤으로 하나 선택
+            random_ad_url = random.choice(ads_urls)
+            # 광고 이미지를 더미데이터로 만들어줌
+            ad_dict = {
+                "imageID": None,
+                "title": "광고",
+                "imageURL": random_ad_url
+            }
+            # 리스트에 광고 랜덤 삽입
+            data_with_ad = insert_ads_randomly(serializer.data, ad_dict)
+        else:
+            data_with_ad = serializer.data
+
+        return paginator.get_paginated_response(data_with_ad)
 
 #전체조회 - 조회수 기준
 class ImagesViewCountAPIView(APIView):
@@ -163,7 +181,6 @@ class HistoryAPIView(APIView):
 #태그 자동 생성 기능
 class TagAPIView(APIView):
     permission_classes = [IsAuthenticated]
-
     def post(self, request):
         image_file = request.FILES.get('imageURL')
         if not image_file:
@@ -176,6 +193,6 @@ class TagAPIView(APIView):
 class TextChangeAPIView(APIView):
     def get(self,request, imageID):
         image = get_object_or_404(Images, imageID=imageID)
-        text = image_to_braille(image.imageURL)
+        text = image_to_braille(image.imageURL.url)
         return Response({'text':text},status=status.HTTP_200_OK)
 
