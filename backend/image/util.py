@@ -30,18 +30,11 @@ def list_ads_image_urls():
                 urls.append(url)
     return urls
 
-def insert_ads_randomly(images, ads):
-    result = []
-    ad_count = len(ads)
-    image_count = len(images)
+def insert_ads_randomly(images, ad):
+    insert_pos = random.randint(0, len(images))
+    # 광고 하나를 images 리스트 중간에 삽입
+    return images[:insert_pos] + [ad] + images[insert_pos:]
 
-    # 광고 삽입 위치 랜덤 선택
-    for ad in ads:
-        insert_pos = random.randint(0, len(images))
-        # images 리스트를 나누어 광고 삽입
-        images = images[:insert_pos] + [ad] + images[insert_pos:]
-
-    return images
 
 def makeTag_from_file(image):
     classes = ['Happiness', 'Fear', 'Sadness', 'Surprised']
