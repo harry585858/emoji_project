@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/harry585858/emoji_project/issues"
   },
-  "homepage": "https://github.com/harry585858/emoji_project#readme"
+  "homepage": "https://github.com/harry585858/emoji_project#readme",
+  "dependencies": {
+    "vite": "^6.3.5"
+  }
 }
