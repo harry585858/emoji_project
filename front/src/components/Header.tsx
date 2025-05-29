@@ -10,6 +10,12 @@ interface ImageItem {
   imageURL: string;
   is_favorite:boolean;
 }
+interface ImageListResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: ImageItem[];
+}
 // 쿠키에서 특정 key
 const getCookie = (name: string): string | null => {
   const value = `; ${document.cookie}`;
@@ -54,8 +60,9 @@ const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
     return;
   }
   try {
-    const response = await axios.get<ImageItem[]>(`${config.apiurl}image/title/${search.trim()}`);
-    setImages(response.data);
+    const response = await axios.get<ImageListResponse>(`${config.apiurl}image/title/${search.trim()}`);
+    const data = response.data;
+    setImages(data.results);
   } catch (error) {
     console.error('에러 발생:', error);
   }
@@ -95,11 +102,11 @@ const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
       </div>
       {isHomePage && (
   <div className="image-results">
-    {images.map((item: ImageItem, idx: number) => (
+    {images.length !==0 && images.map((item: ImageItem, idx: number) => (
       <div className="imgbox" key={idx}>
         <a href={`/detail?imageID=${item.imageID}`}>
           <img src={item.imageURL} alt={item.title} />
-          <p>{item.title}</p>
+          <p>{item.title}{item.is_favorite ? `❤️`:`🤍`}</p>
         </a>
       </div>
     ))}
