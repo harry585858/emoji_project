@@ -2,9 +2,10 @@
 /shelf/
 /workspace.xml
 *.env
+*.env-dev
 *.pyc
 *.pyo
 *.pyd
-
+venv/
 __pycache__/
 migrations/
