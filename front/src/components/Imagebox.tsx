@@ -1,5 +1,4 @@
 import '../assets/Imagebox.css';
-import { useLocation, useNavigate } from "react-router-dom";
 
 interface ImageDetail {
   imageID: number;
@@ -15,7 +14,6 @@ interface ImageBoxProps {
 }
 
 const ImageBox = ({ isEditMode, imageData }: ImageBoxProps) => {
-  const navigate = useNavigate();
 
   return (
     <div className="image-box">
