@@ -19,13 +19,17 @@ def list_ads_image_urls():
         Bucket=settings.AWS_STORAGE_BUCKET_NAME,
         Prefix='ads/' #S3/ads
     )
+
+    #이미지를 업로드 -> s3 -> 업로드 결과 url (지정된)-> DB RDS에 저장 -> 불러올때도 DB ->
+
     urls = [] #url 저장 리스트
     if 'Contents' in response:
         for obj in response['Contents']:
             key = obj['Key'] #ads/adImage.jpg
             # 폴더 자체가 아닌 파일만 필터링
             if not key.endswith('/'):
-                url = f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{key}"
+                # RDS 에서 꺼내오는걸로
+                url = f"shttps://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{key}"
                 urls.append(url)
     return urls
 
@@ -33,7 +37,7 @@ def makeTag_from_file(image):
     classes = ['Happiness', 'Fear', 'Sadness', 'Surprised']
 
     # EC2 모델 경로
-    MODEL_PATH = "/home/ubuntu/tagging_model_from_csv_128.h5"
+    MODEL_PATH = "/usr/src/app/tagging_model_from_csv_128.h5"
     model = load_model(MODEL_PATH)
 
     file_bytes = np.asarray(bytearray(image.read()), dtype=np.uint8)

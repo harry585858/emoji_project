@@ -10,7 +10,6 @@ class Images(models.Model):
     imageURL = models.ImageField(db_column='imageURL', upload_to='images/')
 
     class Meta:
-        managed = False
         db_table = 'images'
 
 
@@ -21,7 +20,6 @@ class Tags(models.Model):
     tag = models.CharField(max_length=10)
 
     class Meta:
-        managed = False
         db_table = 'tags'
         unique_together = (('imageID', 'tag'),)
 
@@ -34,7 +32,6 @@ class Favoriteimages(models.Model):
     createDate = models.DateTimeField(db_column='createDate', auto_now_add=True)
 
     class Meta:
-        managed = False
         db_table = 'favoriteImages'
         unique_together = (('userID', 'imageID'),)
 
@@ -47,7 +44,6 @@ class Historys(models.Model):
     watchDate = models.DateTimeField(db_column='watchDate', auto_now_add=True)
 
     class Meta:
-        managed = False
         db_table = 'historys'
         unique_together = (('userID', 'imageID'),)
 
@@ -59,6 +55,5 @@ class Modimages(models.Model):
     title = models.CharField(max_length=20)
 
     class Meta:
-        managed = False
         db_table = 'modImages'
         unique_together = (('imageID', 'title'),)

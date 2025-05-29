@@ -49,6 +49,7 @@ class ImageCreateSerializer(serializers.ModelSerializer):
         model = Images
         fields = ('userID', 'title','imageURL', 'tags')
         read_only_fields = ('userID',)  # userid body에서 입력 제외
+
     #tag도 한번에 저장되도록
     def create(self, validated_data):
         tags_data = validated_data.pop('tags', [])
