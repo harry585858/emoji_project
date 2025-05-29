@@ -19,7 +19,6 @@ const getCookie = (name: string): string | null => {
 };
 
 function App() {
-  const [recimages, setrecImages] = useState<ImageItem[]>([]);
   const [images, setImages] = useState<ImageItem[]>([]);
   const [login, setLogin] = useState(false);
 
@@ -39,7 +38,7 @@ function App() {
     }
   }, []);
 
-  // 로그인 상태일 때 추천 이미지 불러오기
+  // 로그인 상태일 때 이미지 불러오기
   useEffect(() => {
     if (login) {
       const token = localStorage.getItem('access_token');
@@ -51,28 +50,33 @@ function App() {
           withCredentials: false, // 쿠키 인증 필요시
         })
         .then(res => {
-          setrecImages(res.data);
+          setImages(res.data);
         })
         .catch(err => console.error('추천 이미지 로드 실패:', err));
+    }
+    else{
+      console.error('no return');
+      setImages([]);
     }
   }, [login]);
 
   return (
-    <>
-      <br />
-     { login ?  <h1>최근 조회한 이미지</h1> : null}
-      <div className="image-results">
-        {images.map((item: ImageItem, idx: number) => (
-          <div className="imgbox" key={idx}>
-            <a href={`/detail?imageID=${item.imageID}`}>
-              <img src={item.imageURL} alt={item.title} />
-              <p>{item.title}</p>
-            </a>
-          </div>
-        ))}
-      </div>
-    </>
-  );
+  <>
+    <br />
+    {login && <h1>최근 조회한 이미지</h1>}
+
+    <div className="image-results">
+      {images.length !== 0 && images.map((item: ImageItem, idx: number) => (
+        <div className="imgbox" key={idx}>
+          <a href={`/detail?imageID=${item.imageID}`}>
+            <img src={item.imageURL} alt={item.title} />
+            <p>{item.title}</p>
+          </a>
+        </div>
+      ))}
+    </div>
+  </>
+);
 }
 
 export default App;
