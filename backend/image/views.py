@@ -46,7 +46,8 @@ class ImagesAPIView(APIView):
             ad_dict = {
                 "imageID": None,
                 "title": "광고",
-                "imageURL": random_ad_url
+                "imageURL": random_ad_url,
+                "is_favorite": False
             }
             # 리스트에 광고 랜덤 삽입
             data_with_ad = insert_ads_randomly(serializer.data, ad_dict)
