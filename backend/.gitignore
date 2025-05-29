@@ -2,6 +2,7 @@
 /shelf/
 /workspace.xml
 *.env
+*.env-dev
 *.pyc
 *.pyo
 *.pyd
