@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../assets/Header.css';
 import config from '../config';
 import axios from 'axios';
@@ -34,7 +34,7 @@ function Loginbox() {
 }
     } catch (err)
     {
-      if(err.status == 401){
+      if(err instanceof Error){
         alert('아이디 또는 비밀번호가 맞지 않습니다');
         return;
       }
