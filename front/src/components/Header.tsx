@@ -1,8 +1,22 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { useLocation } from 'react-router-dom'; // useLocation 훅 임포트
+import { useLocation } from 'react-router-dom';
 import '../assets/Header.css';
 import config from '../config';
+<<<<<<< Updated upstream
 // 쿠키에서 특정 key (예: userID) 값을 찾는 함수
+=======
+import logo from '/src/assets/logo.webp'
+import axios from 'axios';
+
+interface ImageItem {
+  imageID: number;
+  title: string;
+  imageURL: string;
+  is_favorite: boolean;
+}
+
+// 쿠키에서 특정 key
+>>>>>>> Stashed changes
 const getCookie = (name: string): string | null => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -14,6 +28,7 @@ const getCookie = (name: string): string | null => {
 function Header() {
   const [login, setLogin] = useState(false);
   const [search, setSearch] = useState('');
+<<<<<<< Updated upstream
   const [images, setImages] = useState<string[]>([]);
   const location = useLocation(); // 현재 경로 정보 가져오기
 
@@ -71,6 +86,38 @@ function Header() {
       <div id="header">
         <img alt="logo" onClick={() => { window.location.href = '/'; }} />
 
+=======
+  const location = useLocation();
+
+  useEffect(() => {
+    const userID = getCookie('userID');
+    if (userID) {
+      setLogin(true);
+    }
+  }, []);
+
+  const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (search.trim() === '') {
+      window.location.href = '/';
+      return;
+    }
+    try {
+      const response = await axios.get<ImageItem[]>(`${config.apiurl}image/title/${search.trim()}`);
+      // 검색 결과 처리는 추후 구현
+      console.log('검색 결과:', response.data);
+    } catch (error) {
+      console.error('에러 발생:', error);
+    }
+  };
+
+  const isHomePage = location.pathname === '/';
+
+  return (
+    <div id="header">
+      <img alt="😄😁" src={logo} onClick={() => { window.location.href = '/'; }} />
+      {isHomePage ? (
+>>>>>>> Stashed changes
         <form onSubmit={handleSearch}>
           <input
             type="text"
@@ -79,6 +126,7 @@ function Header() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </form>
+<<<<<<< Updated upstream
 
         {login ? (
           <button id="headerbtn" onClick={() => { window.location.href = '/mypage'; }}>
@@ -107,6 +155,24 @@ function Header() {
         </div>
       )}
     </>
+=======
+      ) : null}
+      {login ? (
+        <div>
+          <button className="headerbtn" onClick={() => { window.location.href = '/upload'; }}>
+            업로드
+          </button>
+          <button className="headerbtn" onClick={() => { window.location.href = '/mypage'; }}>
+            마이페이지
+          </button>
+        </div>
+      ) : (
+        <button className="headerbtn" onClick={() => { window.location.href = '/account/login'; }}>
+          로그인
+        </button>
+      )}
+    </div>
+>>>>>>> Stashed changes
   );
 }
 
