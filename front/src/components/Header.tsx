@@ -1,5 +1,5 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'; // useLocation 훅 임포트
 import '../assets/Header.css';
 import config from '../config';
 import logo from '/src/assets/logo.webp'
@@ -113,24 +113,6 @@ const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
   </div>
 )}
     </>
-=======
-      ) : null}
-      {login ? (
-        <div>
-          <button className="headerbtn" onClick={() => { window.location.href = '/upload'; }}>
-            업로드
-          </button>
-          <button className="headerbtn" onClick={() => { window.location.href = '/mypage'; }}>
-            마이페이지
-          </button>
-        </div>
-      ) : (
-        <button className="headerbtn" onClick={() => { window.location.href = '/account/login'; }}>
-          로그인
-        </button>
-      )}
-    </div>
->>>>>>> Stashed changes
   );
 }
 
