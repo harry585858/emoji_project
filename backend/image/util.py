@@ -2,12 +2,46 @@ import cv2
 import requests
 import numpy as np
 from tensorflow.keras.models import load_model
+from django.conf import settings
+import boto3
+import random
+
+def list_ads_image_urls():
+    # S3 이미지 URL 광고 이미지 받아 오는 코드 함수 형태로 추가
+    s3 = boto3.client(
+        's3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+        region_name=settings.AWS_S3_REGION_NAME
+    )
+
+    # Ads 폴더의 모든 오브젝트(key) 리스트 가져오기
+    response = s3.list_objects_v2(
+        Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+        Prefix='ads/' #S3/ads
+    )
+    urls = [] #url 저장 리스트
+    if 'Contents' in response:
+        for obj in response['Contents']:
+            key = obj['Key'] #ads/adImage.jpg
+            # 폴더 자체가 아닌 파일만 필터링
+            if not key.endswith('/'):
+                url = f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{key}"
+                urls.append(url)
+    return urls
+
+def insert_ads_randomly(images, ad):
+    insert_pos = random.randint(0, len(images))
+    # 광고 하나를 images 리스트 중간에 삽입
+    return images[:insert_pos] + [ad] + images[insert_pos:]
 
 
 def makeTag_from_file(image):
     classes = ['Happiness', 'Fear', 'Sadness', 'Surprised']
 
-    model = load_model('tagging_model_from_csv_128.h5')
+    # EC2 모델 경로
+    MODEL_PATH = "/home/ubuntu/tagging_model_from_csv_128.h5"
+    model = load_model(MODEL_PATH)
 
     file_bytes = np.asarray(bytearray(image.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
