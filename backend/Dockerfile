@@ -7,14 +7,20 @@ WORKDIR /usr/src/app
 # 종속성 설치
 COPY requirements.txt /usr/src/app/
 
+#opencv 의존성 설치
+RUN apt-get update && apt-get install -y libgl1 && rm -rf /var/lib/apt/lists/*
+
 # 터미널 안에서 리눅스 명령어 사용하는 것처럼 사용 가능
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 애플리케이션 코드 복사
 COPY . .
 
+# .env 를 삭제하고 .env-dev를 .env 로 변경
+RUN rm -f .env && mv .env-dev .env
+
 # Django 애플리케이션이 있는 디렉토리로 이동
-WORKDIR /usr/src/app/emoji_project
+WORKDIR /usr/src/app
 
 # 컨테이너 외부에서 접근할 수 있도록 포트 8000 노출
 EXPOSE 8000

@@ -75,12 +75,21 @@ class ImageAPIView(APIView):
 class ImagesByTitleAPIView(APIView):
     #retrieve by title
     def get(self, request, title):
+        # 정렬 파라미터 받기 (기본값: -createDate)
+        sort_param = request.query_params.get('sort', '-createDate')
+        sort_field = sort_param.lstrip('-')
+        # 허용된 필드 목록
+        ALLOWED_SORT_FIELDS = ['createDate', 'title', 'viewCount']
+        # 유효성 검사
+        if sort_field not in ALLOWED_SORT_FIELDS:
+            sort_param = '-createDate'  # 기본값으로 대체
+
         images = Images.objects.filter(title__istartswith=title).order_by('-createDate')
         paginator = PageNumberPagination()
         paginator.page_size = 10  # 한 페이지에 10개씩
 
         result_page = paginator.paginate_queryset(images, request)
-        serializer = ImageSimpleSerializer(result_page, many=True,context={'request': request})
+        serializer = ImageSimpleSerializer(result_page, many=True, context={'request': request})
         return paginator.get_paginated_response(serializer.data)
 
 #내가 올린 이미지 조회
@@ -99,6 +108,9 @@ class ImageAuthAPIView(APIView):
         serializer = ImageCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(userID=request.user)
+            # s3 에서 객체 경로 받아와서
+            # RDS 저장 full 전체 경로로 저장하기
+            # 불러오기도 DB
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     # modify image
