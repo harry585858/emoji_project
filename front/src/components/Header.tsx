@@ -111,6 +111,9 @@ const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
         </a>
       </div>
     ))}
+    <button onClick={()=>setPage(page > 1 ? page-1:1)}> {page-1}</button>
+    <p>{page}</p>
+    <button onClick={()=>setPage(page+1)}>{page+1}</button>
   </div>
 )}
     </>
