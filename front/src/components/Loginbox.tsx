@@ -15,9 +15,9 @@ function Loginbox() {
     try {
       const response = await axios.post(`${config.apiurl}accounts/login/`, {
         userID: username,
-        userPW: password,
+        userPW: password, 
       });
-
+      console.log('success', response);
       if (response.status !== 200) {
         throw new Error('로그인에 실패했습니다. 사용자명 또는 비밀번호를 확인하세요.');
       }

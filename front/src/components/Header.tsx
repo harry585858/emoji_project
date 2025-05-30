@@ -27,6 +27,7 @@ const getCookie = (name: string): string | null => {
 // Header 컴포넌트 내에서 로그인 여부 확인
 function Header() {
   const [login, setLogin] = useState(false);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [images, setImages] = useState<ImageItem[]>([]);
   const location = useLocation(); // 현재 경로 정보 가져오기
@@ -36,7 +37,7 @@ function Header() {
     setLogin(true);
   }
 
-  axios.get(`${config.apiurl}image`)
+  axios.get(`${config.apiurl}image/?page=${page}&sort=Default`)
     .then(response => {
       const data = response.data;
       if (Array.isArray(data.results)) {
