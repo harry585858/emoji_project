@@ -117,7 +117,7 @@ function resetPage(input : number){
   <div className="image-results">
     {images.length !==0 && images.map((item: ImageItem, idx: number) => (
       <div className="imgbox" key={idx}>
-        <a href={`/detail?/${item.imageID}`}>
+        <a href={`/detail/${item.imageID}`}>
           <img src={item.imageURL} alt={item.title} />
           <p>{item.title}{item.is_favorite ? `❤️`:`🤍`}</p>
         </a>
