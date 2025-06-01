@@ -123,9 +123,9 @@ function resetPage(input : number){
         </a>
       </div>
     ))}
-    <button onClick={()=>resetPage(page > 1 ? page-1:1)}> {page-1}</button>
-    <p>{page}</p>
-    <button onClick={()=>resetPage(page+1)}>{page+1}</button>
+    <button className='pagebtn' onClick={()=>resetPage(page > 1 ? page-1:1)}> {page-1}</button>
+    <button> {page}</button>
+    <button className='pagebtn' onClick={()=>resetPage(page+1)}>{page+1}</button>
   </div>
 )}
     </>
