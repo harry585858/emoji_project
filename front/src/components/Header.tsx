@@ -88,10 +88,15 @@ function Header() {
 };
   useEffect(() => {
   const userID = getCookie('userID');
+  const token= localStorage.getItem('access_token');
   if (userID) {
     setLogin(true);
   }
-  axios.get(`${config.apiurl}image/?page=${page}&sort=Default`)
+  axios.get(`${config.apiurl}image/?page=${page}&sort=Default`,{
+    headers: {
+          Authorization: `Bearer ${token}`,
+        },
+  })
     .then(response => {
       const data = response.data;
       if (Array.isArray(data.results)) {
