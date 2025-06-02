@@ -187,9 +187,9 @@ function resetPage(input: number) {
       <div className="imgbox" key={idx}>
         <a href={`/detail/${item.imageID}`}>
           <img src={item.imageURL} alt={item.title} />
-          <p>{item.title}</p>
+          <p>{item.title}</p>        </a>
           <p onClick={()=> toggleLike(item.imageID)}>{item.is_favorite ? `❤️`:`🤍`}</p>
-        </a>
+
       </div>
     ))}
   </div>
