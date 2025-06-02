@@ -31,12 +31,66 @@ function Header() {
   const [search, setSearch] = useState('');
   const [images, setImages] = useState<ImageItem[]>([]);
   const location = useLocation(); // 현재 경로 정보 가져오기
+
+  const toggleLike = (imageID: number): void => {
+  const token= localStorage.getItem('access_token');
+  if (!token) {
+    alert('로그인이 필요합니다.');
+    return;
+  }
+
+  const imageIndex: number = images.findIndex((img) => img.imageID === imageID);
+  if (imageIndex === -1) return;
+
+  const isCurrentlyFavorite: boolean = images[imageIndex].is_favorite;
+
+  if (isCurrentlyFavorite) {
+    // ❤️ -> 🤍 좋아요 취소
+    axios
+      .delete(`${config.apiurl}image/favorite/del/${imageID}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        const newImages: ImageItem[] = [...images];
+        newImages[imageIndex] = {
+          ...newImages[imageIndex],
+          is_favorite: false,
+        };
+        setImages(newImages);
+      })
+      .catch((err: unknown) => {
+        console.error('좋아요 취소 실패:', err);
+        alert('좋아요 취소에 실패했습니다.');
+      });
+  } else {
+    // 🤍 -> ❤️ 좋아요 등록
+    axios
+      .post(`${config.apiurl}image/favorite/add/`, {imageID:String(imageID)}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        const newImages: ImageItem[] = [...images];
+        newImages[imageIndex] = {
+          ...newImages[imageIndex],
+          is_favorite: true,
+        };
+        setImages(newImages);
+      })
+      .catch((err: unknown) => {
+        console.error('좋아요 등록 실패:', err);
+        alert('좋아요 등록에 실패했습니다.');
+      });
+  }
+};
   useEffect(() => {
   const userID = getCookie('userID');
   if (userID) {
     setLogin(true);
   }
-
   axios.get(`${config.apiurl}image/?page=${page}&sort=Default`)
     .then(response => {
       const data = response.data;
@@ -128,7 +182,7 @@ function resetPage(input: number) {
       <div className="imgbox" key={idx}>
         <a href={`/detail/${item.imageID}`}>
           <img src={item.imageURL} alt={item.title} />
-          <p>{item.title}{item.is_favorite ? `❤️`:`🤍`}</p>
+          <p onClick={()=> toggleLike(item.imageID)}>{item.title}{item.is_favorite ? `❤️`:`🤍`}</p>
         </a>
       </div>
     ))}
