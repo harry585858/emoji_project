@@ -6,6 +6,6 @@
 *.pyc
 *.pyo
 *.pyd
-venv/
+
 __pycache__/
 migrations/
