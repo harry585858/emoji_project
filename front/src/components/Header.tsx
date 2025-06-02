@@ -125,11 +125,13 @@ function resetPage(input : number){
     ))}
   </div>
 )}
-<div>
+{isHomePage &&
+(<div>
     <button className='pagebtn' onClick={()=>resetPage(page > 1 ? page-1:1)}> {page-1}</button>
     <button> {page}</button>
     <button className='pagebtn' onClick={()=>resetPage(page+1)}>{page+1}</button>
   </div>
+)}
     </>
   );
 }
