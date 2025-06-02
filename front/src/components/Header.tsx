@@ -47,7 +47,7 @@ function Header() {
   if (isCurrentlyFavorite) {
     // ❤️ -> 🤍 좋아요 취소
     axios
-      .delete(`${config.apiurl}image/favorite/del/${imageID}/`, {
+      .delete(`${config.apiurl}image/favorite/del/${imageID}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
