@@ -71,18 +71,27 @@ const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
 
   // 현재 경로가 '/'일 때만 이미지 표시
 const isHomePage = location.pathname === '/';
-function resetPage(input : number){
-    setPage(input);
-  axios.get(`${config.apiurl}image/?page=${page}&sort=Default`)
+function resetPage(input: number) {
+  setPage(input);
+  
+  axios.get(`${config.apiurl}image/?page=${input}&sort=Default`) // <- page가 아니라 input 사용
     .then(response => {
       const data = response.data;
       if (Array.isArray(data.results)) {
-      setImages(data.results);
-    } else {
-      console.error("응답에 results가 없음:", data);
-      setImages([]);
-}
+        setImages(data.results);
+        console.log('업데이트');
+      } else {
+        console.error("응답에 results가 없음:", data);
+        setImages([]);
+      }
     })
+    .catch(error => {
+      if (error.response && error.response.status === 404) {
+        alert('해당 페이지를 찾을 수 없습니다.');
+      } else {
+        console.error('요청 실패:', error);
+      }
+    });
 }
   return (
     <>
