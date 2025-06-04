@@ -136,6 +136,8 @@ class ImageAuthAPIView(APIView):
     def put(self, request, imageID):
         image = get_object_or_404(Images, imageID=imageID)
         serializer = ImageCreateSerializer(image, data=request.data)
+        if image.userID != request.user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
         if serializer.is_valid():
             serializer.save(userID=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)

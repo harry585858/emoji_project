@@ -51,3 +51,31 @@ def delete(request):
     user = request.user
     user.delete()
     return Response({'message': "회원탈퇴 완료"}, status=status.HTTP_200_OK)
+
+#비밀번호 수정
+@api_view(['put'])
+@permission_classes([IsAuthenticated])
+def changePW(request):
+    user = request.user
+    old_password = request.data.get('old_password')
+    new_password = request.data.get('new_password')
+
+    if not old_password or not new_password:
+        return Response({'detail': '모든 필드를 입력해주세요.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # 현재 비밀번호 확인
+    if not user.check_password(old_password):
+        return Response({'detail': '현재 비밀번호가 올바르지 않습니다.'}, status=status.HTTP_403_FORBIDDEN)
+
+    # 새 비밀번호로 변경
+    user.set_password(new_password)
+    user.save()
+    return Response({'detail': '비밀번호가 변경되었습니다.'}, status=status.HTTP_200_OK)
+
+#유저 정보 조회
+@api_view(['get'])
+@permission_classes([IsAuthenticated])
+def userInfo(request):
+    user = request.user
+    return Response({"usrID":request.user.id}, status=status.HTTP_200_OK)
+
