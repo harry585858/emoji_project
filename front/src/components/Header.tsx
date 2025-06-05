@@ -116,7 +116,17 @@ function Header() {
   // 로그인 여부 확인 + 첫 이미지 로딩
   useEffect(() => {
     const userID = localStorage.getItem('userID');
-    if (userID) setLogin(true);
+    const token = localStorage.getItem('refresh_token');
+    if (userID){
+      axios.post(`${config.apiurl}accounts/api/token/refresh/`,
+        {refresh : token },
+        {withCredentials: false}
+      )
+      .then(
+        (res)=>{localStorage.setItem('access_token',res.data.access);}
+      )
+      setLogin(true);
+    }
     setImages([]);
     setPage(1);
     setHasMore(true);

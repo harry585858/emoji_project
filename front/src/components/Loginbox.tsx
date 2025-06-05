@@ -26,6 +26,7 @@ function Loginbox() {
       const data = response.data;  // response.json() 대신 data에 직접 접근
       if (data.access) {
       localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);
       //const userID = response.data.userID;
       document.cookie = `userID=${username}; path=/; SameSite=None`;//설정필요
       localStorage.setItem('userID', username);
