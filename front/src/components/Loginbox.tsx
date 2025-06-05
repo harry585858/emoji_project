@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../assets/Header.css';
 import config from '../config';
 import axios from 'axios';
-import banner from '../assets/banner.png';
+import keeplogo from '../assets/keeplogo.png';
 function Loginbox() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -49,27 +49,27 @@ function Loginbox() {
   return (
     <div id="main1">
       <div id="left">
-        <img src={banner}></img>
+        <img src={keeplogo}></img>
       </div>
       <div id="right">
         <form onSubmit={handleLogin}>
           <input
             type="text"
-            placeholder="Username"
+            placeholder="아이디"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Login</button>
+          <button type="submit">로그인</button>
         </form>
-        <button id='signinbtn' onClick={() => {window.location.href = '/account/signup'; }}>signup</button>
+        <button id='signinbtn' onClick={() => {window.location.href = '/account/signup'; }}>회원가입</button>
       </div>
     </div>
   );
