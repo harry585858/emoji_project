@@ -28,6 +28,7 @@ function Loginbox() {
       localStorage.setItem('access_token', data.access);
       //const userID = response.data.userID;
       document.cookie = `userID=${username}; path=/; SameSite=None`;//설정필요
+      localStorage.setItem('userID', username);
       document.location.href = '/';
       alert('로그인 성공');
     } else {

@@ -43,3 +43,13 @@ html, body {
 .pagebtn{
   margin: 1em;
 }
+.imgbox a{
+  text-decoration: none;
+  color: black;
+}
+.imgbox{
+  border: 0.1em solid black;
+  border-radius: 0.1em;
+  margin: 1em;
+  background-color: white;
+}
