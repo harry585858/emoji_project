@@ -30,7 +30,7 @@ def list_ads_image_urls():
             # 폴더 자체가 아닌 파일만 필터링
             if not key.endswith('/'):
                 # RDS 에서 꺼내오는걸로
-                url = f"shttps://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{key}"
+                url = f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{key}"
                 urls.append(url)
     return urls
 
