@@ -1,17 +1,17 @@
 
 import '../assets/index.css'
 import '../assets/Login.css'
-import Loginbox from '../components/Loginbox'
+import Uploadbox from '../components/Uploadbox'
 
-function Login() {
+function Upload() {
   //const [count, setCount] = useState(0)
 
   return (
     <>  
-      <Loginbox />
+      <Uploadbox />
       </>
   )
 }
 
 
-export default Login;
+export default Upload;

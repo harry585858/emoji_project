@@ -1,20 +1,3 @@
-/* App.css */
-
-/* 격자 레이아웃 스타일 */
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));  /* 자동으로 칸을 채우는 격자 */
-  gap: 1rem; /* 항목 간 간격 */
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.emoji-item {
-  overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
 .emoji-image {
   width: 100%;
@@ -40,4 +23,29 @@ html, body {
   justify-content: center;
   align-items: center;
   text-align: center; /* 텍스트 중앙 정렬 */
+}
+html, body {
+  height: 100%; /* 화면 전체 높이 */
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+.image-results{
+  width: 100%;
+  height:100%;
+  align-items: center;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+.imgbox img{
+  width: 100%;
+  height: 100%;
+}
+.imgbox{
+  width:10em;
+  height: 10em;
 }
