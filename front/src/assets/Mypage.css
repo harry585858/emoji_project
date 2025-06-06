@@ -78,14 +78,13 @@
 .profile-section {
   width: 100%;
   max-width: 600px;
-  margin: 0 0 40px 0; /* margin auto 제거하고 왼쪽 정렬 */
+  margin: 0 auto 40px;
 }
 
 .profile-info {
   display: flex;
   align-items: center;
   gap: 26px;
-  justify-content: flex-start; /* 왼쪽 정렬 추가 */
 }
 
 .profile-image-container {
