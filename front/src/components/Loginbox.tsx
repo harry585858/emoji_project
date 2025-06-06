@@ -15,13 +15,9 @@ function Loginbox() {
     try {
       const response = await axios.post(`${config.apiurl}accounts/login/`, {
         userID: username,
-<<<<<<< HEAD
-        userPW: password,
-=======
         userPW: password, 
       },{
         withCredentials: true
->>>>>>> 0a337f79a9d69e90c832717c10abbcd9bf15c791
       });
       console.log('success', response);
       if (response.status !== 200) {

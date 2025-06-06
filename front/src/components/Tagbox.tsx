@@ -1,4 +1,4 @@
-import '../assets/Tagbox.css';
+import '../assets/TagBox.css';
 
 const TagBox = () => {
   return (
