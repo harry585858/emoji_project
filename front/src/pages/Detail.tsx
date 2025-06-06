@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+<<<<<<< HEAD
 import axios from 'axios';
 import config from '../config';
+=======
+>>>>>>> 0a337f79a9d69e90c832717c10abbcd9bf15c791
 import TagBox from "../components/Tagbox";
 import ImageBox from "../components/Imagebox";
 import testImage from '../assets/test.png';
