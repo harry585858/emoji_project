@@ -53,7 +53,8 @@ function Signinbox() {
         setError('회원가입 실패! 다시 시도해 주세요.');
       }
     } catch (error) {
-      setError('회원가입 실패! 존재하는 아이디');
+      console.error('회원가입 에러:', error.response?.data || error);
+      setError(error.response?.data?.error || '회원가입 실패! 알 수 없는 오류');
     } finally {
       setLoading(false);  // 로딩 상태 종료
     }

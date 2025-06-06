@@ -49,10 +49,18 @@ function Uploadbox() {
     }
 
     const formData = new FormData();
-    formData.append('imageURL', file);
+    formData.append('image', file);
     formData.append('title', title);
-    formData.append('tags', JSON.stringify(tags)); // 태그를 JSON 문자열로 전송
+    formData.append('tags', JSON.stringify(tags));
+    
     const token = localStorage.getItem('access_token');
+    console.log('전송할 데이터:', {
+      file: file.name,
+      title: title,
+      tags: tags,
+      token: token ? 'exists' : 'missing'
+    });
+    
     axios
       .post(`${config.apiurl}image/add/`, formData, {
         headers: {
@@ -71,7 +79,13 @@ function Uploadbox() {
       })
       .catch(err => {
         console.error('업로드 실패:', err);
-        alert('업로드 실패');
+        console.error('에러 상세:', {
+          message: err.message,
+          response: err.response?.data,
+          status: err.response?.status,
+          headers: err.response?.headers
+        });
+        alert(`업로드 실패: ${err.response?.data?.message || err.message}`);
       });
   };
 

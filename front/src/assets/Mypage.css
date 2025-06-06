@@ -8,9 +8,10 @@
 .mypage-sidebar {
   width: 200px;
   padding: 20px;
+  padding-top: 10vh; /* 상단 여백 5% */
   border-right: 1px solid #ddd;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: stretch;
   flex-direction: column;
   gap: 12px;
@@ -19,10 +20,8 @@
 
 .mypage-content {
   flex: 1;
-  display: flex;            /* 중앙 정렬을 위해 flex 설정 */
-  justify-content: center;
-  align-items: center;
   padding: 40px;
+  overflow-y: auto;
 }
 
 .mypage-button {
@@ -34,7 +33,7 @@
   border-radius: 8px;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition: all 0.2s;
 }
 
 .mypage-button:hover {
@@ -42,12 +41,237 @@
   color: #000000;
 }
 
-
-.mypage-button.selected {
+.mypage-button.active {
   border: 2px solid #007bff;
   background-color: #eaf2ff;
   color: #007bff;
   font-weight: bold;
+}
+
+/* 내 정보 */
+.user-info-section {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.user-info-section h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 30px;
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+.user-info-section h3 {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 30px;
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+.profile-section {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.profile-image-container {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #666;
+}
+
+.profile-details {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.user-id {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.profile-upload-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  align-self: flex-start;
+}
+
+.profile-upload-button:hover {
+  background-color: #0056b3;
+}
+
+.info-divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 32px 0;
+  width: 100%;
+}
+
+.account-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.action-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  background-color: #007bff;
+  color: white;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+.action-button.danger {
+  background-color: #dc3545;
+}
+
+.action-button.danger:hover {
+  background-color: #c82333;
+}
+
+/* 모달 스타일 */
+.password-change {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.password-change input {
+  padding: 8px 0;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  width: 100%;
+  background: transparent;
+  transition: border-bottom-color 0.3s ease;
+  border-radius: 0; /* 모서리를 각지게 만듦 */
+  -webkit-appearance: none; /* Safari에서 기본 스타일 제거 */
+  -moz-appearance: none; /* Firefox에서 기본 스타일 제거 */
+  appearance: none; /* 기본 스타일 제거 */
+}
+
+.password-change input:focus {
+  outline: none;
+  border-bottom: 2px solid #007bff;
+  box-shadow: none; /* 포커스 시 그림자 효과 제거 */
+}
+
+.password-change input::placeholder {
+  color: #999;
+}
+
+.cancel-button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #666;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.cancel-button:hover {
+  background-color: #f8f9fa;
+}
+
+.confirm-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.confirm-button:hover {
+  background-color: #0056b3;
+}
+
+.confirm-button.danger {
+  background-color: #dc3545;
+}
+
+.confirm-button.danger:hover {
+  background-color: #c82333;
+}
+
+.withdraw-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 400px;
+  width: 100%;
+  align-items: center;
+}
+
+.withdraw-section p {
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+}
+
+.withdraw-button {
+  padding: 10px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.withdraw-button:hover {
+  background-color: #c82333;
 }
 
 .image-placeholder {
@@ -69,82 +293,9 @@
   background-color: #b0b0b0;
 }
 
-/* 공통 중앙 정렬 wrapper */
 .centered-section {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.password-change {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  font-size: 16px;
-  align-items: center;
-}
-
-.password-change label {
-  display: flex;
-  flex-direction: row; /* 라벨과 인풋 나란히 */
-  align-items: center;
-  gap: 12px;
-}
-
-.password-change input {
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 250px;
-}
-
-
-/* 탈퇴 섹션 */
-.withdraw-section {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: center;
-  font-size: 18px;
-}
-
-.withdraw-buttons {
-  display: flex;
-  gap: 32px; /* 버튼 간 간격 증가 */
-}
-
-.cancel-button {
-  padding: 10px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.2s ease;
-}
-
-.confirm-button, .cancel-button {
-  background-color: #6c757d;
-  color: white;
-}
-
-.confirm-button:hover,
-.cancel-button:hover {
-  background-color: #007bff;
-}
-
-.confirm-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.confirm-button:hover {
-  background-color: #0056b3;
 }

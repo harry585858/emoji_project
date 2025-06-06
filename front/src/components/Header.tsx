@@ -1,118 +1,144 @@
-import { useState, useEffect, FormEvent } from 'react';
-import { useLocation } from 'react-router-dom'; // useLocation 훅 임포트
+import React, { useState, useEffect, FormEvent } from 'react';
 import '../assets/Header.css';
-import config from '../config';
-import logo from '/src/assets/logo.webp'
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import config from '../config';
+import { getCookie } from '../utils/cookie';
+
 interface ImageItem {
   imageID: number;
   title: string;
   imageURL: string;
-  is_favorite:boolean;
+  viewCount: number;
+  createDate: string;
+  userID: number;
 }
+
 interface ImageListResponse {
   count: number;
   next: string | null;
   previous: string | null;
   results: ImageItem[];
 }
-// 쿠키에서 특정 key
-const getCookie = (name: string): string | null => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
-  return null;
-};
 
 // Header 컴포넌트 내에서 로그인 여부 확인
 function Header() {
   const [login, setLogin] = useState(false);
   const [search, setSearch] = useState('');
   const [images, setImages] = useState<ImageItem[]>([]);
-  const location = useLocation(); // 현재 경로 정보 가져오기
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [userInitial, setUserInitial] = useState('');
+  const location = useLocation();
+
   useEffect(() => {
-  const userID = getCookie('userID');
-  if (userID) {
-    setLogin(true);
-  }
+    const userID = getCookie('userID');
+    if (userID) {
+      setLogin(true);
+      // 사용자 ID의 첫 글자를 대문자로 설정
+      setUserInitial(userID.charAt(0).toUpperCase());
+    }
 
-  axios.get(`${config.apiurl}image`)
-    .then(response => {
-      const data = response.data;
-      if (Array.isArray(data.results)) {
-      setImages(data.results);
-    } else {
-      console.error("응답에 results가 없음:", data);
-      setImages([]);
-}
-    })
-    .catch(error => {
-      console.error('에러 발생:', error);
-      setImages([]); // 에러 시에도 빈 배열
-    });
-}, []);
+    axios.get(`${config.apiurl}image`)
+      .then(response => {
+        const data = response.data;
+        if (Array.isArray(data.results)) {
+          setImages(data.results);
+        } else {
+          console.error("응답에 results가 없음:", data);
+          setImages([]);
+        }
+      })
+      .catch(error => {
+        console.error('에러 발생:', error);
+        setImages([]);
+      });
+  }, []);
 
-const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setImages([]);
-  if (search.trim() === '') {
+  const handleLogout = () => {
+    // 로컬 스토리지의 토큰 제거
+    localStorage.removeItem('access_token');
+    // 쿠키의 userID 제거
+    document.cookie = 'userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    setLogin(false);
+    setShowDropdown(false);
+    // 홈페이지로 리다이렉트
     window.location.href = '/';
-    return;
-  }
-  try {
-    const response = await axios.get<ImageListResponse>(`${config.apiurl}image/title/${search.trim()}`);
-    const data = response.data;
-    setImages(data.results);
-  } catch (error) {
-    console.error('에러 발생:', error);
-  }
-};
+  };
 
-  // 현재 경로가 '/'일 때만 이미지 표시
+  const handleSearch = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setImages([]);
+    if (search.trim() === '') {
+      window.location.href = '/';
+      return;
+    }
+    try {
+      const response = await axios.get<ImageListResponse>(`${config.apiurl}image/title/${search.trim()}`);
+      const data = response.data;
+      setImages(data.results);
+    } catch (error) {
+      console.error('에러 발생:', error);
+    }
+  };
+
   const isHomePage = location.pathname === '/';
 
   return (
-    <>
-      <div id="header">
-        <img alt="😄😁" src={logo} onClick={() => { window.location.href = '/'; }} />
-{isHomePage ? (
-        <form onSubmit={handleSearch}>
+    <header className="header">
+      <div className="header-left">
+        <Link to="/" className="logo">
+          KEEPIC
+        </Link>
+        <form onSubmit={handleSearch} className="search-form">
           <input
             type="text"
-            placeholder="검색어 입력"
+            placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
           />
-        </form>)
-:null }
+        </form>
+      </div>
+      <div className="header-right">
         {login ? (
-          <div>
-            <button className="headerbtn" onClick={() => { window.location.href = '/upload'; }}>
-            업로드
-          </button>
-          <button className="headerbtn" onClick={() => { window.location.href = '/mypage'; }}>
-            마이페이지
-          </button>
-          </div>
+          <>
+            <Link to="/Upload" className="upload-button">
+              Upload
+            </Link>
+            <div className="profile-container">
+              <button 
+                className="profile-button"
+                onClick={() => setShowDropdown(!showDropdown)}
+                aria-label="프로필 메뉴"
+              >
+                <span className="profile-circle">
+                  {userInitial || '👤'}
+                </span>
+              </button>
+              {showDropdown && (
+                <div className="profile-dropdown">
+                  <Link to="/mypage" className="dropdown-item">
+                    마이페이지
+                  </Link>
+                  <button onClick={handleLogout} className="dropdown-item">
+                    로그아웃
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
         ) : (
-          <button className="headerbtn" onClick={() => { window.location.href = '/account/login'; }}>
-            로그인
-          </button>
+          <>
+            <Link to="/account/login" className="login-button">
+              Login
+            </Link>
+            <Link to="/account/signup" className="signup-button">
+              Sign up
+            </Link>
+          </>
         )}
       </div>
-      {isHomePage && (
-  <div className="image-results">
-    {images.length !==0 && images.map((item: ImageItem, idx: number) => (
-      <div className="imgbox" key={idx}>
-        <a href={`/detail?imageID=${item.imageID}`}>
-          <img src={item.imageURL} alt={item.title} />
-          <p>{item.title}{item.is_favorite ? `❤️`:`🤍`}</p>
-        </a>
-      </div>
-    ))}
-  </div>
-)}
-    </>
+    </header>
   );
 }
 
