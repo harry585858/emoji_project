@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, FormEvent, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../assets/Header.css';
 import config from '../config';
-import logo from '/src/assets/logo.png'
+import logo from '/src/assets/logo.webp'
 import axios from 'axios';
 
 interface ImageItem {
