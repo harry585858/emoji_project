@@ -207,7 +207,7 @@ function Header() {
                 key={item.imageID}
                 ref={isLast ? lastImageRef : null}
               >
-                <a href={`/detail/${item.imageID}`}>
+                <a href={`/Detail/${item.imageID}`}>
                   <img src={item.imageURL} alt={item.title} />
                   <p>{item.title}</p>
                 </a>
@@ -218,8 +218,9 @@ function Header() {
           {loading && <div style={{ textAlign: 'center', padding: 20 }}>로딩 중...</div>}
           {!hasMore && !loading && images.length > 0 && (
             <div style={{ textAlign: 'center', padding: 20 }}>더 이상 이미지가 없습니다.</div>
-          )}
+          )} 
         </div>
+        
       )}
     </>
   );

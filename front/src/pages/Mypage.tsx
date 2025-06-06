@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation, Link, Route, Routes, Navigate } from 'react-router-dom';
+//import { useNavigate, useLocation, Link, Route, Routes, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import config from '../config';
 import '../assets/Mypage.css';
@@ -242,6 +242,8 @@ const Mypage = () => {
     setShowWithdrawModal(false);
   };
 
+  const menuItems = ['내 정보', '즐겨찾기들', '히스토리'];
+
   const renderContent = () => {
     switch (selected) {
       case '내 정보':
@@ -298,7 +300,7 @@ const Mypage = () => {
 
             {showPasswordModal && (
               <Modal onClick={() => setShowPasswordModal(false)}>
-                <ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
+                <ModalContent onClick={e => e.stopPropagation()}>
                   <h3>비밀번호 변경</h3>
                   <div className="password-change">
                     <input
@@ -334,7 +336,7 @@ const Mypage = () => {
 
             {showWithdrawModal && (
               <Modal onClick={() => setShowWithdrawModal(false)}>
-                <ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
+                <ModalContent onClick={e => e.stopPropagation()}>
                   <h3>회원탈퇴</h3>
                   <p>정말로 탈퇴하시겠습니까? 모든 데이터가 삭제되며 복구할 수 없습니다.</p>
                   <ModalButtons>
@@ -354,23 +356,18 @@ const Mypage = () => {
       case '즐겨찾기들':
         return (
           <div className="favorites-container">
-            {/* 즐겨찾기 내용 */}
+            <h2>즐겨찾기한 이모티콘</h2>
+            {/* 즐겨찾기 내용 구현 예정 */}
           </div>
         );
 
-      case '내 이모티콘':
-        return (
-          <div className="my-emoticons-container">
-            {/* 내 이모티콘 내용 */}
-          </div>
-        );
+      case '히스토리':
+        return <History />;
 
       default:
         return null;
     }
   };
-
-  const menuItems = ['내 정보', '즐겨찾기들', '내 이모티콘'];
 
   return (
     <div className="mypage-container">
@@ -672,34 +669,45 @@ const ViewHistory = () => {
 };
 
 const History = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [currentView, setCurrentView] = useState('viewed');
 
-  useEffect(() => {
-    if (location.pathname === '/mypage/history') {
-      navigate('/mypage/history/viewed');
+  const renderHistoryContent = () => {
+    switch (currentView) {
+      case 'created':
+        return <CreatedHistory />;
+      case 'viewed':
+        return <ViewHistory />;
+      case 'uploaded':
+        return <UploadHistory />;
+      default:
+        return <ViewHistory />;
     }
-  }, [location.pathname, navigate]);
+  };
 
   return (
     <div className="history-container">
+      <h2>히스토리</h2>
       <div className="history-nav">
-        <Link to="/mypage/history/created" className={location.pathname === '/mypage/history/created' ? 'active' : ''}>
+        <button
+          className={`history-nav-button ${currentView === 'created' ? 'active' : ''}`}
+          onClick={() => setCurrentView('created')}
+        >
           생성 기록
-        </Link>
-        <Link to="/mypage/history/viewed" className={location.pathname === '/mypage/history/viewed' ? 'active' : ''}>
+        </button>
+        <button
+          className={`history-nav-button ${currentView === 'viewed' ? 'active' : ''}`}
+          onClick={() => setCurrentView('viewed')}
+        >
           조회 기록
-        </Link>
-        <Link to="/mypage/history/uploaded" className={location.pathname === '/mypage/history/uploaded' ? 'active' : ''}>
+        </button>
+        <button
+          className={`history-nav-button ${currentView === 'uploaded' ? 'active' : ''}`}
+          onClick={() => setCurrentView('uploaded')}
+        >
           내 업로드
-        </Link>
+        </button>
       </div>
-      <Routes>
-        <Route index element={<Navigate to="viewed" replace />} />
-        <Route path="created" element={<CreatedHistory />} />
-        <Route path="viewed" element={<ViewHistory />} />
-        <Route path="uploaded" element={<UploadHistory />} />
-      </Routes>
+      {renderHistoryContent()}
     </div>
   );
 };
