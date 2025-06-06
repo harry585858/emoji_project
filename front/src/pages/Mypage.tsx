@@ -131,7 +131,33 @@ const Mypage = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [userId, setUserId] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // 사용자 정보 가져오기
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(`${config.apiurl}accounts/user-info/`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          }
+        });
+        if (response.status === 200) {
+          setUserId(response.data.usrID);
+        }
+      } catch (error) {
+        console.error('사용자 정보 로드 실패:', error);
+        // 실패 시 쿠키의 값을 폴백으로 사용
+        const cookieUserId = getCookie('userID');
+        if (cookieUserId) {
+          setUserId(cookieUserId);
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -234,12 +260,12 @@ const Mypage = () => {
                     />
                   ) : (
                     <div className="profile-image">
-                      {getCookie('userID')?.charAt(0).toUpperCase() || '👤'}
+                      {userId?.charAt(0).toUpperCase() || '👤'}
                     </div>
                   )}
                 </div>
                 <div className="profile-details">
-                  <p className="user-id">{getCookie('userID')}</p>
+                  <p className="user-id">{userId}</p>
                   <button 
                     className="profile-upload-button"
                     onClick={handleUploadClick}
