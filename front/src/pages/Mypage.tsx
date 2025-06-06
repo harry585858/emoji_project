@@ -298,7 +298,7 @@ const Mypage = () => {
 
             {showPasswordModal && (
               <Modal onClick={() => setShowPasswordModal(false)}>
-                <ModalContent onClick={e => e.stopPropagation()}>
+                <ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
                   <h3>비밀번호 변경</h3>
                   <div className="password-change">
                     <input
@@ -334,7 +334,7 @@ const Mypage = () => {
 
             {showWithdrawModal && (
               <Modal onClick={() => setShowWithdrawModal(false)}>
-                <ModalContent onClick={e => e.stopPropagation()}>
+                <ModalContent onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
                   <h3>회원탈퇴</h3>
                   <p>정말로 탈퇴하시겠습니까? 모든 데이터가 삭제되며 복구할 수 없습니다.</p>
                   <ModalButtons>
