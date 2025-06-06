@@ -365,8 +365,22 @@ const Mypage = () => {
           </div>
         );
 
+      case '즐겨찾기':
+        return (
+          <div className="empty-section">
+            즐겨찾기 기능은 현재 준비 중입니다.
+          </div>
+        );
+
+      case '생성 기록':
+        return (
+          <div className="empty-section">
+            생성 기록 기능은 현재 준비 중입니다.
+          </div>
+        );
+
       default:
-        return null;
+        return <div>왼쪽 메뉴에서 항목을 선택해주세요.</div>;
     }
   };
 

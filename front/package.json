@@ -14,7 +14,7 @@
     "react": "^19.0.0",
     "react-cookie": "^8.0.1",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.4.0",
+    "react-router-dom": "^7.6.2",
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {

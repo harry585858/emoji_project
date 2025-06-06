@@ -14,7 +14,7 @@ function RouterConfig(){
             <Route path="/account/signup" element={<Signin/>}/>
             <Route path="/" element={<App/>}/>
             <Route path="/mypage" element={<Mypage />}/>
-            <Route path="/Detail" element={<Detail />}/>
+            <Route path="/detail/:imageId" element={<Detail />}/>
             <Route path="/Edit" element={<Edit />}/>
             <Route path="/Upload" element={<Upload />}/>
         </Routes>

@@ -1,8 +1,9 @@
 .mypage-container {
   display: flex;
-  height: 100vh;
-  background-color: #ffffff;
-  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 2rem auto;
+  min-height: calc(100vh - 100px);
+  padding: 0 1rem;
 }
 
 .mypage-sidebar {
@@ -36,9 +37,10 @@
   transition: all 0.2s;
 }
 
-.mypage-button:hover {
-  background-color: #e6e6e6;
-  color: #000000;
+.password-change {
+  width: 100%;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .mypage-button.active {
