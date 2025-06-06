@@ -3,17 +3,6 @@ import axios from 'axios';
 import config from '../config';
 import '../assets/Uploadbox.css';
 
-function getCookie(name: string): string | undefined {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) {
-    const lastPart = parts.pop();
-    if (lastPart) {
-      return lastPart.split(';')[0]; // 또는 .shift() 대신 [0]
-    }
-  }
-  return undefined;
-}
 function Uploadbox() {
   const [preview, setPreview] = useState<string | null>(null);
   const [title, setTitle] = useState<string>('');
@@ -58,13 +47,12 @@ function Uploadbox() {
       alert('제목과 이미지를 모두 입력해주세요.');
       return;
     }
+
     const formData = new FormData();
-    if (getCookie("userID") !== undefined) {
-  formData.append('userID', getCookie("userID")?? '');
-}
+    formData.append('image', file);
     formData.append('title', title);
-    formData.append('imageURL', file);
-    formData.append('tags', JSON.stringify(tags)); // 태그를 JSON 문자열로 전송
+    formData.append('tags', JSON.stringify(tags));
+    
     const token = localStorage.getItem('access_token');
     console.log('전송할 데이터:', {
       file: file.name,

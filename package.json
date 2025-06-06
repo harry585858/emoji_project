@@ -4,8 +4,7 @@
   "description": "<<<<<<< HEAD\r 이모티콘 공유 플렛폼?\r https://github.com/harry585858/emoji_project.git\r =======\r 2025-1 공개 SW 프로젝트 1조",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -17,8 +16,5 @@
   "bugs": {
     "url": "https://github.com/harry585858/emoji_project/issues"
   },
-  "homepage": "https://github.com/harry585858/emoji_project#readme",
-  "dependencies": {
-    "vite": "^6.3.5"
-  }
+  "homepage": "https://github.com/harry585858/emoji_project#readme"
 }

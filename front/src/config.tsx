@@ -1,4 +1,4 @@
 const config = {
-    apiurl : 'https://api.keepic.store/'
+    apiurl : 'http://localhost:8000/'
 }
 export default config

@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react';
 import '../assets/Header.css';
 import axios from 'axios';
 import config from '../config';
-import keeplogo from '../assets/keeplogo.png';
+import banner from '../assets/banner.png';
 function Signinbox() {
   // 상태 관리: 아이디, 비밀번호, 비밀번호 확인, 오류 메시지
   const [id, setId] = useState('');
@@ -63,7 +63,7 @@ function Signinbox() {
   return (
     <div id="main1">
       <div id="left">
-        <img src={keeplogo}></img>
+        <img src={banner}></img>
       </div>
       <div id="right">
         <form onSubmit={checkPasswords}>

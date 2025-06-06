@@ -1,7 +1,7 @@
 
 import '../assets/index.css'
 import '../assets/Login.css'
-import Loginbox from '../components/Loginbox'
+import Loginbox from '../components/Loginbox.tsx'
 
 function Login() {
   //const [count, setCount] = useState(0)

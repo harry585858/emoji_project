@@ -1,7 +1,7 @@
 
 import '../assets/index.css'
 import '../assets/Login.css'
-import Uploadbox from '../components/Uploadbox'
+import Uploadbox from '../components/Uploadbox.tsx'
 
 function Upload() {
   //const [count, setCount] = useState(0)
