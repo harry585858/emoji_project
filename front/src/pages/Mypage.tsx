@@ -589,7 +589,7 @@ const UploadHistory = () => {
 
   const handleDelete = async (imageId: number) => {
     try {
-      await axios.delete(`${config.apiurl}image/${imageId}/`, {
+      await axios.delete(`${config.apiurl}image/del/${imageId}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         }
