@@ -32,11 +32,37 @@ function Header() {
   const [images, setImages] = useState<ImageItem[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [username, setUsername] = useState('');
   const location = useLocation();
   const observer = useRef<IntersectionObserver | null>(null);
   const lastImageRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const isHomePage = location.pathname === '/';
+
+  // 드롭다운 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // 로그아웃 처리
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('userID');
+    setLogin(false);
+    window.location.href = '/';
+  };
 
   // 좋아요 토글 함수 (변경 없음)
   const toggleLike = (imageID: number): void => {
@@ -123,7 +149,10 @@ function Header() {
         {withCredentials: false}
       )
       .then(
-        (res)=>{localStorage.setItem('access_token',res.data.access);}
+        (res)=>{
+          localStorage.setItem('access_token',res.data.access);
+          setUsername(userID);
+        }
       )
       setLogin(true);
     }
@@ -182,13 +211,30 @@ function Header() {
           </form>
         ) : null}
         {login ? (
-          <div>
+          <div className="header-right">
             <button className="headerbtn" onClick={() => { window.location.href = '/upload'; }}>
               업로드
             </button>
-            <button className="headerbtn" onClick={() => { window.location.href = '/mypage'; }}>
-              마이페이지
-            </button>
+            <div className="profile-dropdown" ref={dropdownRef}>
+              <button 
+                className="profile-button" 
+                onClick={() => setShowDropdown(!showDropdown)}
+              >
+                <div className="profile-circle">
+                  {username.charAt(0).toUpperCase()}
+                </div>
+              </button>
+              {showDropdown && (
+                <div className="dropdown-menu">
+                  <button onClick={() => { window.location.href = '/mypage'; }}>
+                    마이페이지
+                  </button>
+                  <button onClick={handleLogout}>
+                    로그아웃
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <button className="headerbtn" onClick={() => { window.location.href = '/account/login'; }}>
@@ -207,7 +253,7 @@ function Header() {
                 key={item.imageID}
                 ref={isLast ? lastImageRef : null}
               >
-                <a href={`/Detail/${item.imageID}`}>
+                <a href={`/edit/${item.imageID}`}>
                   <img src={item.imageURL} alt={item.title} />
                   <p>{item.title}</p>
                 </a>

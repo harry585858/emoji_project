@@ -244,6 +244,90 @@ const Mypage = () => {
 
   const menuItems = ['내 정보', '즐겨찾기들', '히스토리'];
 
+  const FavoriteImages = () => {
+    const [images, setImages] = useState<any[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    const fetchFavorites = async (page: number) => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${config.apiurl}image/favorite/list/?page=${page}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          }
+        });
+        
+        setImages(response.data.results);
+        setTotalPages(Math.ceil(response.data.count / 12)); // 페이지당 12개 이미지
+      } catch (error) {
+        console.error('즐겨찾기 목록 로드 실패:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const handleUnfavorite = async (imageId: number) => {
+      try {
+        await axios.delete(`${config.apiurl}image/favorite/del/${imageId}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+          }
+        });
+        // 현재 페이지 새로고침
+        fetchFavorites(currentPage);
+      } catch (error) {
+        console.error('즐겨찾기 삭제 실패:', error);
+        alert('즐겨찾기 삭제에 실패했습니다.');
+      }
+    };
+
+    useEffect(() => {
+      fetchFavorites(currentPage);
+    }, [currentPage]);
+
+    if (loading) {
+      return <EmptyState>로딩 중...</EmptyState>;
+    }
+
+    if (images.length === 0) {
+      return <EmptyState>즐겨찾기한 이미지가 없습니다.</EmptyState>;
+    }
+
+    return (
+      <>
+        <ImageGrid>
+          {images.map((image) => (
+            <StyledImageCard key={image.imageID}>
+              <a href={`/edit/${image.imageID}`}>
+                <img src={image.imageURL} alt={image.title} />
+              </a>
+              <DeleteButton onClick={() => handleUnfavorite(image.imageID)}>
+                ×
+              </DeleteButton>
+            </StyledImageCard>
+          ))}
+        </ImageGrid>
+        <Pagination>
+          <PageButton
+            onClick={() => setCurrentPage(prev => prev - 1)}
+            disabled={currentPage === 1}
+          >
+            이전
+          </PageButton>
+          <PageButton disabled>{currentPage}</PageButton>
+          <PageButton
+            onClick={() => setCurrentPage(prev => prev + 1)}
+            disabled={currentPage === totalPages}
+          >
+            다음
+          </PageButton>
+        </Pagination>
+      </>
+    );
+  };
+
   const renderContent = () => {
     switch (selected) {
       case '내 정보':
@@ -354,12 +438,7 @@ const Mypage = () => {
         );
 
       case '즐겨찾기들':
-        return (
-          <div className="favorites-container">
-            <h2>즐겨찾기한 이모티콘</h2>
-            {/* 즐겨찾기 내용 구현 예정 */}
-          </div>
-        );
+        return <FavoriteImages />;
 
       case '히스토리':
         return <History />;
@@ -483,26 +562,22 @@ const CreatedHistory = () => {
 };
 
 const UploadHistory = () => {
-  const [history, setHistory] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 20;
+  const [loading, setLoading] = useState(false);
 
   const fetchHistory = async (page: number) => {
     try {
-      const token = localStorage.getItem('access_token');
-      const response = await axios.get(`${config.apiurl}image/history/uploaded/`, {
+      setLoading(true);
+      const response = await axios.get(`${config.apiurl}image/history/upload/?page=${page}`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        params: {
-          page: page,
-          size: itemsPerPage
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         }
       });
-      setHistory(response.data.items || []);
-      setTotalPages(Math.ceil((response.data.total || 0) / itemsPerPage));
+      
+      setImages(response.data.results);
+      setTotalPages(Math.ceil(response.data.count / 12)); // 페이지당 12개 이미지
     } catch (error) {
       console.error('업로드 기록 로드 실패:', error);
     } finally {
@@ -512,15 +587,16 @@ const UploadHistory = () => {
 
   const handleDelete = async (imageId: number) => {
     try {
-      const token = localStorage.getItem('access_token');
-      await axios.delete(`${config.apiurl}image/history/uploaded/${imageId}`, {
+      await axios.delete(`${config.apiurl}image/${imageId}/`, {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         }
       });
+      // 현재 페이지 새로고침
       fetchHistory(currentPage);
     } catch (error) {
-      console.error('업로드 기록 삭제 실패:', error);
+      console.error('이미지 삭제 실패:', error);
+      alert('이미지 삭제에 실패했습니다.');
     }
   };
 
@@ -528,74 +604,68 @@ const UploadHistory = () => {
     fetchHistory(currentPage);
   }, [currentPage]);
 
-  if (loading) return <div>로딩중...</div>;
+  if (loading) {
+    return <EmptyState>로딩 중...</EmptyState>;
+  }
 
-  if (history.length === 0) {
-    return (
-      <EmptyState>
-        업로드한 이미지가 없습니다.
-      </EmptyState>
-    );
+  if (images.length === 0) {
+    return <EmptyState>업로드한 이미지가 없습니다.</EmptyState>;
   }
 
   return (
-    <div>
+    <>
       <ImageGrid>
-        {history.map((item) => (
-          <StyledImageCard key={item.imageID}>
-            <img src={item.imageURL} alt={item.title} />
-            <DeleteButton onClick={() => handleDelete(item.imageID)}>×</DeleteButton>
+        {images.map((image) => (
+          <StyledImageCard key={image.imageID}>
+            <a href={`/edit/${image.imageID}`}>
+              <img src={image.imageURL} alt={image.title} />
+              <div className="image-info-overlay">
+                <p className="image-title">{image.title}</p>
+                <p className="view-date">{new Date(image.createDate).toLocaleDateString()}</p>
+              </div>
+            </a>
+            <DeleteButton onClick={() => handleDelete(image.imageID)}>
+              ×
+            </DeleteButton>
           </StyledImageCard>
         ))}
       </ImageGrid>
       <Pagination>
-        <PageButton 
-          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+        <PageButton
+          onClick={() => setCurrentPage(prev => prev - 1)}
           disabled={currentPage === 1}
         >
           이전
         </PageButton>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <PageButton
-            key={page}
-            isActive={page === currentPage}
-            onClick={() => setCurrentPage(page)}
-          >
-            {page}
-          </PageButton>
-        ))}
-        <PageButton 
-          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+        <PageButton disabled>{currentPage}</PageButton>
+        <PageButton
+          onClick={() => setCurrentPage(prev => prev + 1)}
           disabled={currentPage === totalPages}
         >
           다음
         </PageButton>
       </Pagination>
-    </div>
+    </>
   );
 };
 
 const ViewHistory = () => {
-  const [history, setHistory] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 20;
+  const [loading, setLoading] = useState(false);
 
   const fetchHistory = async (page: number) => {
     try {
-      const token = localStorage.getItem('access_token');
-      const response = await axios.get(`${config.apiurl}image/history/viewed/`, {
+      setLoading(true);
+      const response = await axios.get(`${config.apiurl}image/history/view/?page=${page}`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        params: {
-          page: page,
-          size: itemsPerPage
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         }
       });
-      setHistory(response.data.items || []);
-      setTotalPages(Math.ceil((response.data.total || 0) / itemsPerPage));
+      
+      setImages(response.data.results);
+      setTotalPages(Math.ceil(response.data.count / 12)); // 페이지당 12개 이미지
     } catch (error) {
       console.error('조회 기록 로드 실패:', error);
     } finally {
@@ -603,84 +673,63 @@ const ViewHistory = () => {
     }
   };
 
-  const handleDelete = async (imageId: number) => {
-    try {
-      const token = localStorage.getItem('access_token');
-      await axios.delete(`${config.apiurl}image/history/viewed/${imageId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      fetchHistory(currentPage);
-    } catch (error) {
-      console.error('조회 기록 삭제 실패:', error);
-    }
-  };
-
   useEffect(() => {
     fetchHistory(currentPage);
   }, [currentPage]);
 
-  if (loading) return <div>로딩중...</div>;
+  if (loading) {
+    return <EmptyState>로딩 중...</EmptyState>;
+  }
 
-  if (history.length === 0) {
-    return (
-      <EmptyState>
-        조회한 이미지가 없습니다.
-      </EmptyState>
-    );
+  if (images.length === 0) {
+    return <EmptyState>조회한 이미지가 없습니다.</EmptyState>;
   }
 
   return (
-    <div>
+    <>
       <ImageGrid>
-        {history.map((item) => (
-          <StyledImageCard key={item.imageID}>
-            <img src={item.imageURL} alt={item.title} />
-            <DeleteButton onClick={() => handleDelete(item.imageID)}>×</DeleteButton>
+        {images.map((image) => (
+          <StyledImageCard key={image.imageID}>
+            <a href={`/edit/${image.imageID}`}>
+              <img src={image.imageURL} alt={image.title} />
+              <div className="image-info-overlay">
+                <p className="image-title">{image.title}</p>
+                <p className="view-date">{new Date(image.watchDate).toLocaleDateString()}</p>
+              </div>
+            </a>
           </StyledImageCard>
         ))}
       </ImageGrid>
       <Pagination>
-        <PageButton 
-          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+        <PageButton
+          onClick={() => setCurrentPage(prev => prev - 1)}
           disabled={currentPage === 1}
         >
           이전
         </PageButton>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <PageButton
-            key={page}
-            isActive={page === currentPage}
-            onClick={() => setCurrentPage(page)}
-          >
-            {page}
-          </PageButton>
-        ))}
-        <PageButton 
-          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+        <PageButton disabled>{currentPage}</PageButton>
+        <PageButton
+          onClick={() => setCurrentPage(prev => prev + 1)}
           disabled={currentPage === totalPages}
         >
           다음
         </PageButton>
       </Pagination>
-    </div>
+    </>
   );
 };
 
 const History = () => {
-  const [currentView, setCurrentView] = useState('viewed');
+  const [selectedTab, setSelectedTab] = useState('업로드');
 
   const renderHistoryContent = () => {
-    switch (currentView) {
-      case 'created':
-        return <CreatedHistory />;
-      case 'viewed':
-        return <ViewHistory />;
-      case 'uploaded':
+    switch (selectedTab) {
+      case '업로드':
         return <UploadHistory />;
-      default:
+      case '조회':
         return <ViewHistory />;
+      default:
+        return null;
     }
   };
 
@@ -689,22 +738,16 @@ const History = () => {
       <h2>히스토리</h2>
       <div className="history-nav">
         <button
-          className={`history-nav-button ${currentView === 'created' ? 'active' : ''}`}
-          onClick={() => setCurrentView('created')}
-        >
-          생성 기록
-        </button>
-        <button
-          className={`history-nav-button ${currentView === 'viewed' ? 'active' : ''}`}
-          onClick={() => setCurrentView('viewed')}
-        >
-          조회 기록
-        </button>
-        <button
-          className={`history-nav-button ${currentView === 'uploaded' ? 'active' : ''}`}
-          onClick={() => setCurrentView('uploaded')}
+          className={`history-nav-button ${selectedTab === '업로드' ? 'active' : ''}`}
+          onClick={() => setSelectedTab('업로드')}
         >
           내 업로드
+        </button>
+        <button
+          className={`history-nav-button ${selectedTab === '조회' ? 'active' : ''}`}
+          onClick={() => setSelectedTab('조회')}
+        >
+          조회 기록
         </button>
       </div>
       {renderHistoryContent()}
