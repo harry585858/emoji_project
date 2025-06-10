@@ -48,7 +48,7 @@ const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
       const fetchImageData = async () => {
         try {
           const token = localStorage.getItem('access_token');
-          const response = await axios.get(`${config.apiurl}image/${imageId}/`, {
+          const response = await axios.get(`${config.apiurl}image/detail/${imageId}/`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           });
 
@@ -63,6 +63,7 @@ const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
           setImageData(response.data);
         } catch (err) {
           console.error('이미지 데이터 로드 실패:', err);
+          console.log(imageId);
           setError('이미지를 불러오는데 실패했습니다.');
         } finally {
           setLoading(false);
