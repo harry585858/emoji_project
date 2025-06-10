@@ -52,7 +52,6 @@ button {
 button:hover {
   background-color: #0056b3;
 }
-
 /* 화면이 1:1보다 세로가 길 때 */
 @media (max-aspect-ratio: 1/1) {
   #main1 {

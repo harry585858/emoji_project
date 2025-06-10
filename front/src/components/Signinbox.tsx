@@ -18,13 +18,13 @@ function Signinbox() {
     
     // 비밀번호 일치 여부 확인
     if (password !== confirmPassword) {
-      setError('Passwords do not match!');
+      setError('비밀번호가 동일하지 않습니다!');
       return;
     }
 
     // 유효성 검사 (아이디, 비밀번호, 비밀번호 확인 체크)
     if (id === '' || password === '') {
-      setError('All fields are required.');
+      setError('모든필드를 채우세요');
       return;
     }
 
@@ -68,32 +68,32 @@ function Signinbox() {
         <form onSubmit={checkPasswords}>
         <input
             type="text"
-            placeholder="username"
+            placeholder="사용자이름"
             value={username}
             onChange={(e) => setusername(e.target.value)} // ID 상태 업데이트
           />
           <input
             type="text"
-            placeholder="ID"
+            placeholder="아이디"
             value={id}
             onChange={(e) => setId(e.target.value)} // ID 상태 업데이트
           />
           <input
             type="password"
-            placeholder="PW"
+            placeholder="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)} // 비밀번호 상태 업데이트
           />
           <input
             type="password"
-            placeholder="PWRE"
+            placeholder="비밀번호 재입력"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)} // 비밀번호 확인 상태 업데이트
           />
           {error && <span style={{ color: 'red' }}>{error}</span>} {/* 오류 메시지 */}
           <input
             type="submit"
-            value={loading ? 'Loading...' : 'Sign Up'} // 로딩 중에는 버튼 텍스트 변경
+            value={loading ? 'Loading...' : '회원가입'} // 로딩 중에는 버튼 텍스트 변경
             disabled={loading}  // 로딩 중에는 제출 버튼 비활성화
           />
         </form>
