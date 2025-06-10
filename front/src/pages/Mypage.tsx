@@ -253,13 +253,13 @@ const Mypage = () => {
     const fetchFavorites = async (page: number) => {
       try {
         setLoading(true);
-        const response = await axios.get(`${config.apiurl}image/favorite/list/?page=${page}`, {
+        const response = await axios.get(`${config.apiurl}image/favorite/`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`
           }
         });
         
-        setImages(response.data.results);
+        setImages(response.data);
         setTotalPages(Math.ceil(response.data.count / 12)); // 페이지당 12개 이미지
       } catch (error) {
         console.error('즐겨찾기 목록 로드 실패:', error);
