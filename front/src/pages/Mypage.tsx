@@ -258,7 +258,8 @@ const Mypage = () => {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`
           }
         });
-        
+        page=1;
+        console.log(page);
         setImages(response.data);
         setTotalPages(Math.ceil(response.data.count / 12)); // 페이지당 12개 이미지
       } catch (error) {
@@ -570,13 +571,14 @@ const UploadHistory = () => {
   const fetchHistory = async (page: number) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${config.apiurl}image/history/upload/?page=${page}`, {
+      const response = await axios.get(`${config.apiurl}image/myimage`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         }
       });
-      
-      setImages(response.data.results);
+      page=1;
+      console.log(page);
+      setImages(response.data);
       setTotalPages(Math.ceil(response.data.count / 12)); // 페이지당 12개 이미지
     } catch (error) {
       console.error('업로드 기록 로드 실패:', error);
@@ -658,13 +660,14 @@ const ViewHistory = () => {
   const fetchHistory = async (page: number) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${config.apiurl}image/history/view/?page=${page}`, {
+      const response = await axios.get(`${config.apiurl}image/history/`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`
         }
       });
-      
-      setImages(response.data.results);
+      page = 1;
+      console.log(page);
+      setImages(response.data);
       setTotalPages(Math.ceil(response.data.count / 12)); // 페이지당 12개 이미지
     } catch (error) {
       console.error('조회 기록 로드 실패:', error);
