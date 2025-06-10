@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import '../assets/Imagebox.css';
-import { useNavigate } from "react-router-dom";
 import config from '../config';
 import axios from 'axios';
 
@@ -18,12 +17,14 @@ interface ImageData {
 }
 
 interface ImageBoxProps {
-  isOriginal?: boolean;
-  imageId?: number;
+  isEditMode?: boolean;    // Detail에서 넘기는 prop, 실제로는 내부에서 사용하지 않음
+  isOriginal?: boolean;   // 기본값 true
+  imageId?: number;       // 이미지 id
 }
 
 const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
-  //const navigate = useNavigate();
+  // isEditMode는 현재 내부에서 사용되지 않지만, props로 받음으로써 타입 에러를 방지합니다.
+
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +33,6 @@ const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
   // 텍스트 복사 함수
   const handleCopyText = async () => {
     if (!imageData?.extractedText) return;
-    
     try {
       await navigator.clipboard.writeText(imageData.extractedText);
       setCopySuccess(true);
@@ -51,7 +51,7 @@ const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
           const response = await axios.get(`${config.apiurl}image/${imageId}/`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           });
-          
+
           if (!isOriginal) {
             // 텍스트 추출 API 호출
             const textResponse = await axios.get(`${config.apiurl}image/textChange/${imageId}`, {
@@ -59,7 +59,7 @@ const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
             });
             response.data.extractedText = textResponse.data.text || '변환된 텍스트가 없습니다.';
           }
-          
+
           setImageData(response.data);
         } catch (err) {
           console.error('이미지 데이터 로드 실패:', err);

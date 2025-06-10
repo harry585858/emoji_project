@@ -4,7 +4,7 @@ import ImageBox from "../components/Imagebox";
 const Detail = () => {
   return (
     <div style={{ display: "flex", height: "80vh", margin: "10vh auto", width: "90%" }}>
-      <TagBox />
+      <TagBox imageId={1}/>
       <ImageBox isEditMode={false} />
     </div>
   );
