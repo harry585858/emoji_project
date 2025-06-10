@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../assets/Imagebox.css';
 import { useNavigate } from "react-router-dom";
 import config from '../config';
@@ -23,7 +23,7 @@ interface ImageBoxProps {
 }
 
 const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

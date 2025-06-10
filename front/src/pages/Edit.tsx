@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useParams } from "react-router-dom";
 import TagBox from "../components/Tagbox";
 import ImageBox from "../components/Imagebox";
