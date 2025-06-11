@@ -46,7 +46,7 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
       const fetchImageData = async () => {
         try {
           const token = localStorage.getItem('access_token');
-          const response = await axios.get(`${config.apiurl}image/${imageId}/`, {
+          const response = await axios.get(`${config.apiurl}image/detail/${imageId}`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           });
           
