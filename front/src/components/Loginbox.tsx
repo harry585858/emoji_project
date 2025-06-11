@@ -54,6 +54,7 @@ function Loginbox() {
       </div>
       <div id="right">
         <form onSubmit={handleLogin}>
+          <h2>로그인하여 더 많은 기능을 사용하세요</h2>
           <input
             type="text"
             placeholder="아이디"
@@ -69,8 +70,9 @@ function Loginbox() {
             required
           />
           <button type="submit">로그인</button>
+          <button id='signinbtn' onClick={() => {window.location.href = '/account/signup'; }}>회원가입</button>
         </form>
-        <button id='signinbtn' onClick={() => {window.location.href = '/account/signup'; }}>회원가입</button>
+        
       </div>
     </div>
   );
