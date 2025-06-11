@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import '../assets/Imagebox.css';
-import { useNavigate } from "react-router-dom";
 import config from '../config';
 import axios from 'axios';
 
@@ -22,8 +21,7 @@ interface ImageBoxProps {
   imageId?: number;
 }
 
-const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
-  const navigate = useNavigate();
+const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -98,7 +96,6 @@ const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
           />
         ) : (
           <div className="extracted-text">
-            <p>{imageData.extractedText}</p>
             <button 
               className="copy-button" 
               onClick={handleCopyText}
@@ -106,6 +103,7 @@ const ImageBox = ({ isOriginal = true, imageId }: ImageBoxProps) => {
             >
               {copySuccess ? '복사 완료!' : '텍스트 복사'}
             </button>
+            <p>{imageData.extractedText}</p>
           </div>
         )}
       </div>
