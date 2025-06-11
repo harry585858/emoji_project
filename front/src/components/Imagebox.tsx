@@ -19,10 +19,9 @@ interface ImageData {
 interface ImageBoxProps {
   isOriginal?: boolean;
   imageId?: number | undefined;
-  isEditMode?: boolean;
 }
 
-const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId, isEditMode = false }) => {
+const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
