@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../assets/Imagebox.css';
 import config from '../config';
 import axios from 'axios';
@@ -18,7 +18,7 @@ interface ImageData {
 
 interface ImageBoxProps {
   isOriginal?: boolean;
-  imageId?: number;
+  imageId?: number | undefined;
 }
 
 const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
