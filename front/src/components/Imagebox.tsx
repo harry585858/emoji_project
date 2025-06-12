@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import '../assets/Imagebox.css';
 import config from '../config';
 import axios from 'axios';
@@ -26,6 +26,8 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [imageCopySuccess, setImageCopySuccess] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   // 텍스트 복사 함수
   const handleCopyText = async () => {
@@ -38,6 +40,27 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
     } catch (err) {
       console.error('텍스트 복사 실패:', err);
       alert('텍스트 복사에 실패했습니다.');
+    }
+  };
+
+  // 이미지 복사 함수
+  const handleCopyImage = async () => {
+    if (!imageRef.current) return;
+    
+    try {
+      // 이미지 URL에서 Blob 가져오기
+      const response = await fetch(imageData?.imageURL || '');
+      const blob = await response.blob();
+      
+      // 클립보드에 이미지 복사
+      const item = new ClipboardItem({ [blob.type]: blob });
+      await navigator.clipboard.write([item]);
+      
+      setImageCopySuccess(true);
+      setTimeout(() => setImageCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('이미지 복사 실패:', err);
+      alert('이미지 복사에 실패했습니다. 브라우저가 이 기능을 지원하지 않을 수 있습니다.');
     }
   };
 
@@ -89,11 +112,22 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
       )}
       <div className="image-content">
         {isOriginal ? (
-          <img
-            src={imageData.imageURL}
-            alt={imageData.title}
-            className="image"
-          />
+          <>
+            <div className="image-actions">
+              <button 
+                className="copy-button" 
+                onClick={handleCopyImage}
+              >
+                {imageCopySuccess ? '복사 완료!' : '이미지 복사'}
+              </button>
+            </div>
+            <img
+              ref={imageRef}
+              src={imageData.imageURL}
+              alt={imageData.title}
+              className="image"
+            />
+          </>
         ) : (
           <div className="extracted-text">
             <button 
