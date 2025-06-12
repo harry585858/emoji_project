@@ -23,41 +23,37 @@ const TagBox = ({ imageId }: TagBoxProps) => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        // 테스트 환경에서는 모의 데이터 사용
-        if (imageId === 9999) {
-          const mockTags = [
-            { tagID: 1, tagName: "귀여움", isActive: true },
-            { tagID: 2, tagName: "행복", isActive: true },
-            { tagID: 3, tagName: "웃음", isActive: false },
-            { tagID: 4, tagName: "테스트", isActive: false }
-          ];
-          setTags(mockTags);
-          setLoading(false);
-          return;
-        }
 
         // 실제 API 호출
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${config.apiurl}image/tag/${imageId}`, {
+        const response = await axios.get(`${config.apiurl}tags/`, {
+          params: {
+            imageID: imageId
+          },
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         
-        // API 응답에서 활성/비활성 태그 구분
-        const processedTags = response.data.map((tag: Tag) => ({
-          ...tag,
-          isActive: tag.isActive || false
+        // 태그 데이터 변환
+        const processedTags = response.data.map((tag: any) => ({
+          tagID: tag.id || tag.tagID,
+          tagName: tag.tag,  // 데이터베이스의 tag 컬럼 사용
+          isActive: true  // 기본적으로 활성 상태로 표시
         }));
         
         setTags(processedTags);
       } catch (err) {
         console.error('태그 로드 실패:', err);
         setError('태그를 불러오는데 실패했습니다.');
+        // 에러 발생 시 빈 배열로 설정하여 UI가 깨지지 않도록 함
+        setTags([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTags();
+    if (imageId) {  // imageId가 유효할 때만 태그를 가져옴
+      fetchTags();
+    }
   }, [imageId]);
 
   const handleTagClick = (tagName: string) => {
@@ -68,19 +64,11 @@ const TagBox = ({ imageId }: TagBoxProps) => {
   if (loading) return <div>로딩 중...</div>;
   if (error) return <div>{error}</div>;
 
-  // 태그를 활성/비활성 상태로 정렬
-  const sortedTags = [...tags].sort((a, b) => {
-    if (a.isActive === b.isActive) {
-      return a.tagName.localeCompare(b.tagName);
-    }
-    return a.isActive ? -1 : 1;
-  });
-
   return (
     <div className="tag-box">
       <div className="tags-container">
-        {sortedTags.length > 0 ? (
-          sortedTags.map(tag => (
+        {tags.length > 0 ? (
+          tags.map(tag => (
             <span
               key={tag.tagID}
               className={`tag ${tag.isActive ? 'active-tag' : ''}`}

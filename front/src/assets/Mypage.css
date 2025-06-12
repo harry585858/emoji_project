@@ -393,8 +393,8 @@
 /* 이미지 그리드 스타일 */
 .image-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
   padding: 20px;
 }
 
@@ -412,7 +412,7 @@
 
 .image-card img {
   width: 100%;
-  height: 200px;
+  height: 160px;
   object-fit: cover;
 }
 
