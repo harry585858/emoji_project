@@ -26,7 +26,6 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [imageCopySuccess, setImageCopySuccess] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
   // 텍스트 복사 함수
@@ -104,7 +103,7 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
                 className="copy-button" 
                 onClick={handleOpenImageInNewTab}
               >
-                {imageCopySuccess ? '복사 완료!' : '이미지 복사'}
+                이미지 복사
               </button>
             </div>
             <img
