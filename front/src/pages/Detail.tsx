@@ -1,10 +1,8 @@
-import TagBox from "../components/Tagbox";
 import ImageBox from "../components/Imagebox";
 
 const Detail = () => {
   return (
-    <div style={{ display: "flex", height: "80vh", margin: "10vh auto", width: "90%" }}>
-      <TagBox imageId={1}/>
+    <div style={{ width: "100%", margin: "10vh auto", height: "80vh", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
       <ImageBox />
     </div>
   );

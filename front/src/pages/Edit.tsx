@@ -1,36 +1,21 @@
-
-import { useParams } from "react-router-dom";
-import TagBox from "../components/Tagbox";
 import ImageBox from "../components/Imagebox";
+import { useParams } from "react-router-dom";
 
 const Edit = () => {
   const { id } = useParams<{ id: string }>();
   const imageId = id ? parseInt(id) : 0;
 
   return (
-    <div style={{ 
-      display: "flex", 
-      flexWrap: "wrap",
-      height: "auto", 
+    <div style={{
+      width: "100%",
+      margin: "0 auto",
       minHeight: "85vh",
-      margin: "0 auto", 
-      width: "95%", 
-      gap: "30px", 
-      paddingTop: "80px" 
+      paddingTop: "80px",
+      display: "flex",
+      flexDirection: "row",
+      gap: "30px"
     }}>
-      <div style={{ 
-        width: "250px",
-        minWidth: "250px",
-        marginBottom: "20px"
-      }}>
-        <TagBox imageId={imageId} />
-      </div>
-      <div style={{ 
-        display: "flex", 
-        flex: 1,
-        minWidth: "600px",
-        gap: "20px" 
-      }}>
+      <div style={{ flex: 1, minWidth: "600px", gap: "20px", display: "flex" }}>
         <ImageBox isOriginal={true} imageId={imageId} />
         <ImageBox isOriginal={false} imageId={imageId} />
       </div>

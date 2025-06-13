@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import '../assets/Imagebox.css';
 import config from '../config';
 import axios from 'axios';
+import TagBox from './Tagbox';
 
 interface ImageData {
   imageID: number;
@@ -84,7 +85,7 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
   if (!imageData) return <div>이미지를 찾을 수 없습니다.</div>;
 
   return (
-    <div className="image-box">
+    <div className="image-box wide">
       {isOriginal && (
         <div className="image-info compact">
           <div className="info-row">
@@ -112,6 +113,7 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
               alt={imageData.title}
               className="image"
             />
+            <TagBox imageId={imageData.imageID} />
           </>
         ) : (
           <div className="extracted-text">

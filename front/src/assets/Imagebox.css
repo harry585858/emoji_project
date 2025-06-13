@@ -7,6 +7,12 @@
   min-width: 0;
 }
 
+.image-box.wide {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .image-info {
   background-color: #f5f5f5;
   padding: 15px;
