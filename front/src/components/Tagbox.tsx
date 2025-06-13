@@ -33,11 +33,13 @@ const TagBox = ({ imageId }: TagBoxProps) => {
           
         
         // 태그 데이터 변환
-        const processedTags = response.data.map((tag: any) => ({
-          tagID: tag.id || tag.tagID,
-          tagName: tag.tag,  // 데이터베이스의 tag 컬럼 사용
-          isActive: true  // 기본적으로 활성 상태로 표시
-        }));
+
+// response.data.tags가 배열인지 확인
+const processedTags = response.data.tags.map((tag: any) => ({
+  tagID: tag.id || tag.tagID,
+  tagName: tag.tag,
+  isActive: true
+}));
         
         setTags(processedTags);
       } catch (err) {
