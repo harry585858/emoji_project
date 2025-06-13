@@ -35,9 +35,9 @@ const TagBox = ({ imageId }: TagBoxProps) => {
         // 태그 데이터 변환
 
 // response.data.tags가 배열인지 확인
-const processedTags = response.data.tags.map((tag: any) => ({
-  tagID: tag.id || tag.tagID,
-  tagName: tag.tag,
+const processedTags = response.data.tags.map((tag: string, index: number) => ({
+  tagID: index,         // 문자열이므로 인덱스를 ID로 사용
+  tagName: tag,         // tag는 문자열 자체
   isActive: true
 }));
         
