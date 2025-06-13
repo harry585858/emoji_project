@@ -30,9 +30,6 @@ const TagBox = ({ imageId }: TagBoxProps) => {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           });
             // 텍스트 추출 API 호출
-            const textResponse = await axios.get(`${config.apiurl}image/textChange/${imageId}`, {
-              headers: token ? { Authorization: `Bearer ${token}` } : {},
-            });
           
         
         // 태그 데이터 변환
