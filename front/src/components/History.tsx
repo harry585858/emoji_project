@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useNavigate, useLocation, Link, Route, Routes, Navigate } from 'react-router-dom';
 import ViewHistory from './History/ViewHistory';
 import UploadHistory from './History/UploadHistory';
