@@ -26,10 +26,7 @@ const TagBox = ({ imageId }: TagBoxProps) => {
 
         // 실제 API 호출
         const token = localStorage.getItem('access_token');
-        const response = await axios.get(`${config.apiurl}tags/`, {
-          params: {
-            imageID: imageId
-          },
+        const response = await axios.get(`${config.apiurl}image/tag/${imageId}/`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         

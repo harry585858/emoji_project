@@ -43,24 +43,10 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
     }
   };
 
-  // 이미지 복사 함수
-  const handleCopyImage = async () => {
-    if (!imageRef.current) return;
-    
-    try {
-      // 이미지 URL에서 Blob 가져오기
-      const response = await fetch(imageData?.imageURL || '');
-      const blob = await response.blob();
-      
-      // 클립보드에 이미지 복사
-      const item = new ClipboardItem({ [blob.type]: blob });
-      await navigator.clipboard.write([item]);
-      
-      setImageCopySuccess(true);
-      setTimeout(() => setImageCopySuccess(false), 2000);
-    } catch (err) {
-      console.error('이미지 복사 실패:', err);
-      alert('이미지 복사에 실패했습니다. 브라우저가 이 기능을 지원하지 않을 수 있습니다.');
+  // 이미지 복사 함수 대신 새 탭에서 이미지 열기 함수로 변경
+  const handleOpenImageInNewTab = () => {
+    if (imageData?.imageURL) {
+      window.open(imageData.imageURL, '_blank');
     }
   };
 
@@ -116,7 +102,7 @@ const ImageBox: React.FC<ImageBoxProps> = ({ isOriginal = true, imageId }) => {
             <div className="image-actions">
               <button 
                 className="copy-button" 
-                onClick={handleCopyImage}
+                onClick={handleOpenImageInNewTab}
               >
                 {imageCopySuccess ? '복사 완료!' : '이미지 복사'}
               </button>
