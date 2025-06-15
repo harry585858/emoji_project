@@ -27,7 +27,7 @@ vite: 빌드도구
 AWS: 백엔드 배포용
 OpenCV: 이미지분석 라이브러리
 Tensorflow: 인공지능 라이브러리
-Django: 백엔드 라이브러리
+Django: 백엔드 프레임워크
 Mysql: 데이터베이스
 ```
 ## 파일구조
