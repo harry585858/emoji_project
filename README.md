@@ -31,13 +31,18 @@ Django: 백엔드 라이브러리
 Mysql: 데이터베이스
 ```
 ## 파일구조
+<pre>
+```
 root/
-├── front/                # 프론트엔드(front 브랜치로 분리)
-    └── src/               # pages, components등을 보관
+├── front/                # 프론트엔드 (front 브랜치로 분리)
+│   └── src/              # pages, components 등을 보관
 ├── backend/              # 백엔드
-    ├── image            #이미지관련기능
-    ├── config          
-    └── accounts         #계정관련 기능
+│   ├── image/            # 이미지 관련 기능
+│   ├── config/           
+│   └── accounts/         # 계정 관련 기능
+```
+</pre>
+
 
 
 MIT License
