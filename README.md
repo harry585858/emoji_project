@@ -21,15 +21,23 @@ KEEPIC은 사용자들이 자신의 사진을 업로드하고 공유할 수 있�
 ```
 ## 기술스택
 ```
-React
-Node.js
+React: 프론트엔드 라이브러리
+vite: 빌드도구
 
-AWS
-OpenCV
-Tensorflow
-Django
-Mysql
+AWS: 백엔드 배포용
+OpenCV: 이미지분석 라이브러리
+Tensorflow: 인공지능 라이브러리
+Django: 백엔드 라이브러리
+Mysql: 데이터베이스
 ```
+## 파일구조
+root/
+├── front/                # 프론트엔드(front 브랜치로 분리)
+    └── src/               # pages, components등을 보관
+├── backend/              # 백엔드
+    ├── image            #이미지관련기능
+    ├── config          
+    └── accounts         #계정관련 기능
 
 
 MIT License
