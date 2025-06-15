@@ -18,10 +18,12 @@ Cloud 기반 사용자 공유 Emoji 플랫폼
 ```
   백엔드에서 텍스트 추가 가능
 ```
-## 사용기술
+## 기술스택
 ```
 React
+Node.js
 
+AWS
 OpenCV
 Tensorflow
 Django
